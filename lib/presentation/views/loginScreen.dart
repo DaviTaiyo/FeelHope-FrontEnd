@@ -31,15 +31,33 @@ class _LoginscreenState extends State<Loginscreen> {
                   fontSize: 40,
                   fontWeight: FontWeight.bold),
             ),
-            Text("Vai se tratar main yasuo dos infernos"),
             TextField(
               controller: _usernameController,
-              decoration: InputDecoration(labelText: "Username"),
+              decoration: InputDecoration(labelText: "Nome", 
+              labelStyle: TextStyle(color: Colors.black),
+              ),
+              style: TextStyle(color: Colors.black),
             ),
+            
             TextField(
               controller: _passwordController,
-              decoration: InputDecoration(labelText: "Password"),
+              decoration: InputDecoration(
+                labelText: "Senha",
+                labelStyle: TextStyle(color: Colors.black),
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    showPassword ? Icons.visibility : Icons.visibility_off,
+                    color: Colors.black,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      showPassword = !showPassword;
+                    });
+                  },
+                ),
+              ),
               obscureText: !showPassword,
+              style: TextStyle(color: Colors.black),
             ),
             IconButton(
               icon: Icon(Icons.visibility),
@@ -53,24 +71,38 @@ class _LoginscreenState extends State<Loginscreen> {
               height: 20,
             ),
             ElevatedButton(
-              child: Text("Login"),
+              child: Text("Login", style: TextStyle(color: Colors.black),
+              ),
               onPressed: () {
                 final loginState = Provider.of<LoginState>(context, listen: false);
                 loginState.login(_usernameController.text,
                     _passwordController.text);
-              }),
+                    
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.purple
+              ),
+              ),
+              
+            
               Consumer<LoginState>(builder: (context, state, child) {
                 if (state.user != null) {
-                  return Text("Logged in as: ${state.user!.username}!");
+                  return Text(
+                    "Logged in as: ${state.user!.username}!",
+                    style: TextStyle(color: Colors.white),
+                  );
                 } else if (state.error != null) {
-                  return Text("Error: ${state.error}");
+                  return Text("Error: ${state.error}", 
+                  style: TextStyle(color: Colors.white),
+                );
                 } else {
                   return Container();
                 }
               }),
-          ],
+            ])
+            
+          
         ),
-      ),
-    );
+      );
   }
 }
