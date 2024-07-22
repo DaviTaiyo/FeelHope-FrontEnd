@@ -9,45 +9,51 @@ class Loginscreen extends StatefulWidget {
 
 class _LoginscreenState extends State<Loginscreen> {
   final _usernameController = TextEditingController();
-
   final _passwordController = TextEditingController();
-
   bool showPassword = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(10.0),
+        padding: const EdgeInsets.all(20.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(
-              height: 50,
+              height: 80,
             ),
             Text(
               "Feel Hope",
               style: TextStyle(
                   color: Colors.purple,
-                  fontSize: 40,
+                  fontSize: 30,
                   fontWeight: FontWeight.bold),
             ),
+            SizedBox(height: 50),
             TextField(
               controller: _usernameController,
-              decoration: InputDecoration(labelText: "Nome", 
-              labelStyle: TextStyle(color: Colors.black),
+              decoration: InputDecoration(labelText: "E-mail", 
+              labelStyle: TextStyle(color: Colors.grey),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0)),
               ),
-              style: TextStyle(color: Colors.black),
             ),
             
+            SizedBox(height: 20),
             TextField(
               controller: _passwordController,
+              obscureText: !showPassword,
               decoration: InputDecoration(
-                labelText: "Senha",
-                labelStyle: TextStyle(color: Colors.black),
+                labelText: "Password",
+                labelStyle: TextStyle(color: Colors.grey),
+                border: OutlineInputBorder(borderRadius:
+                 BorderRadius.circular(10.0)
+                ),
                 suffixIcon: IconButton(
                   icon: Icon(
                     showPassword ? Icons.visibility : Icons.visibility_off,
-                    color: Colors.black,
+                    color: Colors.grey,
                   ),
                   onPressed: () {
                     setState(() {
@@ -56,8 +62,6 @@ class _LoginscreenState extends State<Loginscreen> {
                   },
                 ),
               ),
-              obscureText: !showPassword,
-              style: TextStyle(color: Colors.black),
             ),
             IconButton(
               icon: Icon(Icons.visibility),
@@ -70,8 +74,17 @@ class _LoginscreenState extends State<Loginscreen> {
             SizedBox(
               height: 20,
             ),
+            Row(
+              children: [
+                Checkbox(value: false, onChanged: (bool? value) {},
+              ),
+              Text("Continue logado"),
+            ],
+          ),
+          SizedBox(height: 20),
             ElevatedButton(
-              child: Text("Login", style: TextStyle(color: Colors.black),
+              child: Text("Login",
+               style: TextStyle(color: Colors.white),
               ),
               onPressed: () {
                 final loginState = Provider.of<LoginState>(context, listen: false);
@@ -80,11 +93,20 @@ class _LoginscreenState extends State<Loginscreen> {
                     
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.purple
+                backgroundColor: Colors.purple,
+                padding: EdgeInsets.symmetric(horizontal: 100, vertical: 15),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                )
               ),
               ),
+
               
-            
+            SizedBox(height: 20),  
+              TextButton(child: 
+              Text("Esqueceu sua senha?", style: TextStyle(color: Colors.purple)),
+              onPressed: () {},
+            ),         
               Consumer<LoginState>(builder: (context, state, child) {
                 if (state.user != null) {
                   return Text(
@@ -106,3 +128,8 @@ class _LoginscreenState extends State<Loginscreen> {
       );
   }
 }
+
+
+//style: TextStyle(color: Colors.black),
+//obscureText: !showPassword,
+              //style: TextStyle(color: Colors.black),
