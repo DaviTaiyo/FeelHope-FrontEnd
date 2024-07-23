@@ -1,6 +1,7 @@
 import 'package:feelhope/components/gradiente_button.dart';
 import 'package:feelhope/components/gradiente_text.dart';
 import 'package:feelhope/components/themeNotifier.dart';
+import 'package:feelhope/presentation/views/userRegistrationScreen.dart';
 import 'package:flutter/material.dart';
 import '../state/login_state.dart';
 import 'package:provider/provider.dart';
@@ -90,7 +91,7 @@ class _LoginscreenState extends State<Loginscreen> {
                             value: false,
                             onChanged: (bool? value) {},
                           ),
-                          Text("Continue logado"),
+                          Text("Continue Conectado"),
                         ],
                       ),
                       SizedBox(height: 20),
@@ -119,7 +120,12 @@ class _LoginscreenState extends State<Loginscreen> {
                           TextButton(
                             child: Text("Cadastrar-se",
                                 style: TextStyle(color: Colors.purple)),
-                            onPressed: () {},
+                            onPressed: () {Navigator.push(
+                              context, MaterialPageRoute(
+                                builder: (context) => UserRegistrationScreen()
+                                ),
+                              );
+                            },
                           ),
                         ],
                       ),
