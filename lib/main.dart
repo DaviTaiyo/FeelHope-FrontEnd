@@ -1,3 +1,4 @@
+import 'package:feelhope/components/themeNotifier.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'data/datasources/remote/user_remote_datasource.dart';
@@ -17,6 +18,7 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => LoginState(loginUser)),
+        ChangeNotifierProvider(create: (_) => ThemeNotifier()),
       ],
       child: MyApp(),
     ),
@@ -26,12 +28,14 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Clean Architecture Login',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: Loginscreen(),
+    return Consumer<ThemeNotifier>(
+      builder: (context, themeNotifier, child) {
+        return MaterialApp(
+          title: 'Feel Hope',
+          theme: themeNotifier.currentTheme,
+          home: Loginscreen(),
+        );
+      },
     );
   }
 }
