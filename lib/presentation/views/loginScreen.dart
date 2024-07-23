@@ -43,7 +43,7 @@ class _LoginscreenState extends State<Loginscreen> {
                         colors: [Color(0xFF7F7FFF), Color(0xFF9A4DFF), Color(0xFF7F7FFF)]),
                     style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
                   ),
-                  Text("Vai se tratar main yasuo dos infernos", style: TextStyle(fontSize: 16, color: Colors.black54, fontWeight: FontWeight.bold),),
+                  Text("Vai se tratar main yasuo dos infernos", style: TextStyle(fontSize: 16, color: themeNotifier.isDarkMode ? Colors.white54 : Colors.black54, fontWeight: FontWeight.bold),),
                 Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
