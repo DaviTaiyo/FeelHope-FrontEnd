@@ -14,7 +14,6 @@ class LoginState with ChangeNotifier {
 
   Future<void> login(String username, String password) async {
     final result = await loginUser(username, password);
-
     if (result != null) {
       _user = result;
       _error = null;
