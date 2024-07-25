@@ -7,6 +7,31 @@ class PsychologistRegisterScreen extends StatefulWidget {
 }
 
 class _PsychologistRegisterScreenState extends State <PsychologistRegisterScreen>  {
+  bool _isTermsAccepted = false;
+  bool _showPassword = false;
+
+  void _confirmRegistration() {
+    _showMessage("Cadastrado com sucesso");
+  }
+
+  void _showMessage(String message) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text("Ok"),
+            ),
+          ],
+        );
+      },
+    );
+  }
   
   @override
   Widget build(BuildContext context) {
@@ -40,7 +65,7 @@ class _PsychologistRegisterScreenState extends State <PsychologistRegisterScreen
                   "Crie sua conta - Psicologo",
                   style: TextStyle(
                     fontSize: 18,
-                    color: Colors.black
+                    color: Colors.grey
                   ),
                 ),
                 SizedBox(height: 16),
@@ -62,8 +87,18 @@ class _PsychologistRegisterScreenState extends State <PsychologistRegisterScreen
                   decoration: InputDecoration(
                     labelText: "Senha",
                     border: OutlineInputBorder(),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _showPassword ? Icons.visibility : Icons.visibility_off,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _showPassword = !_showPassword;
+                        });
+                      },
+                    )
                   ),
-                  obscureText: true,
+                  obscureText: !_showPassword,
                 ),
                 SizedBox(height: 16),
                 TextField(
@@ -89,12 +124,20 @@ class _PsychologistRegisterScreenState extends State <PsychologistRegisterScreen
                 SizedBox(height: 16),
                 Row(
                   children: [
+                    Checkbox(
+                      value: _isTermsAccepted,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          _isTermsAccepted = value ?? false;
+                        });
+                      },
+                    ),
                     Text("Aceito termo de uso")
                   ],
                 ),
                 SizedBox(height: 16),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: _isTermsAccepted ? _confirmRegistration : null,
                   child: Text("Confirmar"),
                 ),
               ],
