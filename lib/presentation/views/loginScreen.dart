@@ -1,6 +1,8 @@
 import 'package:feelhope/components/gradiente_button.dart';
 import 'package:feelhope/components/gradiente_text.dart';
 import 'package:feelhope/components/themeNotifier.dart';
+import 'package:feelhope/presentation/views/forgotPasswordScreen.dart';
+import 'package:feelhope/presentation/views/homePagePsyScreen.dart';
 import 'package:feelhope/presentation/views/userRegistrationScreen.dart';
 import 'package:flutter/material.dart';
 import '../state/login_state.dart';
@@ -115,14 +117,19 @@ class _LoginscreenState extends State<Loginscreen> {
                           TextButton(
                             child: Text("Esqueceu sua senha?",
                                 style: TextStyle(color: Colors.purple)),
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => ForgotPasswordScreen()),
+                              );
+                            },
                           ),
                           TextButton(
                             child: Text("Cadastrar-se",
                                 style: TextStyle(color: Colors.purple)),
                             onPressed: () {Navigator.push(
                               context, MaterialPageRoute(
-                                builder: (context) => UserRegistrationScreen()
+                                builder: (context) => UserRegistrationScreen() //se quiser ver a pagina inicial, <= MUDE PARA HOMEPAGE()
                                 ),
                               );
                             },
