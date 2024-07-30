@@ -1,4 +1,9 @@
+import 'package:feelhope/components/gradiente_text.dart';
+import 'package:feelhope/components/logoText.dart';
+import 'package:feelhope/components/switchTheme.dart';
+import 'package:feelhope/components/themeNotifier.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   @override
@@ -11,18 +16,46 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final themeNotifier = Provider.of<ThemeNotifier>(context);
+
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.purple,
-        title: Text("Esqueceu sua senha"),
-      ),
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.fromLTRB(20, 50, 20, 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 30),
+            Row(
+              children: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: Icon(Icons.arrow_back),
+                  iconSize: 30,
+                ),
+                Text(
+                  "Voltar",
+                  style: TextStyle(
+                    color: themeNotifier.isDarkMode
+                        ? Colors.white54
+                        : Colors.black54,
+                  ),
+                ),
+                Spacer(),
+                ThemeSwitch(),
+              ],
+            ),
+            Logotext(),
+            Text(
+              "Esqueci a senha...",
+              style: TextStyle(
+                  fontSize: 16,
+                  color: themeNotifier.isDarkMode
+                      ? Colors.white54
+                      : Colors.black54,
+                  fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 40),
             Text(
               "Redefinir Senha",
               style: TextStyle(
@@ -36,7 +69,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               controller: _emailController,
               decoration: InputDecoration(
                 labelText: "Email",
-                labelStyle: TextStyle(color: Colors.black),
+                labelStyle: TextStyle(
+                  color: themeNotifier.isDarkMode
+                      ? Colors.white54
+                      : Colors.black54,
+                ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.0),
                   borderSide: BorderSide(color: Colors.black),
@@ -48,27 +85,31 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               ),
             ),
             SizedBox(height: 20),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.purple,
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0)
+            Row(
+              children: [
+                Spacer(),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.purple,
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0)),
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      isCodeSent = true;
+                    });
+                  },
+                  child: Text("Enviar"),
                 ),
-              ),
-              onPressed: () {
-                setState(() {
-                  isCodeSent = true;
-                });
-              },
-              child: Text("Enviar"),
+              ],
             ),
             SizedBox(height: 20),
             if (isCodeSent)
               Text(
                 "Um código foi enviado para seu email!",
                 style: TextStyle(color: Colors.black),
-            ),
+              ),
           ],
         ),
       ),

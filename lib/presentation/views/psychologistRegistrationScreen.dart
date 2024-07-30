@@ -1,12 +1,17 @@
+import 'package:feelhope/components/logoText.dart';
+import 'package:feelhope/components/switchTheme.dart';
+import 'package:feelhope/components/themeNotifier.dart';
 import 'package:flutter/material.dart';
-
+import 'package:provider/provider.dart';
 
 class PsychologistRegisterScreen extends StatefulWidget {
   @override
-  State<PsychologistRegisterScreen> createState() => _PsychologistRegisterScreenState();
+  State<PsychologistRegisterScreen> createState() =>
+      _PsychologistRegisterScreenState();
 }
 
-class _PsychologistRegisterScreenState extends State <PsychologistRegisterScreen>  {
+class _PsychologistRegisterScreenState
+    extends State<PsychologistRegisterScreen> {
   bool _isTermsAccepted = false;
   bool _showPassword = false;
 
@@ -32,119 +37,137 @@ class _PsychologistRegisterScreenState extends State <PsychologistRegisterScreen
       },
     );
   }
-  
+
   @override
   Widget build(BuildContext context) {
+    final themeNotifier = Provider.of<ThemeNotifier>(context);
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Voltar"),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Center(
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+        body: Padding(
+      padding: const EdgeInsets.fromLTRB(16, 35, 16, 16),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Row(
               children: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: Icon(Icons.arrow_back),
+                  iconSize: 30,
+                ),
                 Text(
-                  'Feel Hope',
+                  "Voltar",
                   style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.purple
+                    color: themeNotifier.isDarkMode
+                        ? Colors.white54
+                        : Colors.black54,
                   ),
                 ),
-                SizedBox(height: 16),
-                Text(
-                  "Crie sua conta - Psicologo",
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.grey
-                  ),
-                ),
-                SizedBox(height: 16),
-                TextField(
-                  decoration: InputDecoration(
-                    labelText: "Nome",
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                SizedBox(height: 16),
-                TextField(
-                  decoration: InputDecoration(
-                    labelText: "Email",
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                SizedBox(height: 16),
-                TextField(
-                  decoration: InputDecoration(
-                    labelText: "Senha",
-                    border: OutlineInputBorder(),
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _showPassword ? Icons.visibility : Icons.visibility_off,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          _showPassword = !_showPassword;
-                        });
-                      },
-                    )
-                  ),
-                  obscureText: !_showPassword,
-                ),
-                SizedBox(height: 16),
-                TextField(
-                  decoration: InputDecoration(
-                    labelText: "CPF",
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                SizedBox(height: 16),
-                TextField(
-                  decoration: InputDecoration(
-                    labelText: "Nome da clínica",
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                SizedBox(height: 16),
-                TextField(
-                  decoration: InputDecoration(
-                    labelText: "CRM",
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                SizedBox(height: 16),
-                Row(
-                  children: [
-                    Checkbox(
-                      value: _isTermsAccepted,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          _isTermsAccepted = value ?? false;
-                        });
-                      },
-                    ),
-                    Text("Aceito termo de uso")
-                  ],
-                ),
-                SizedBox(height: 16),
-                ElevatedButton(
-                  onPressed: _isTermsAccepted ? _confirmRegistration : null,
-                  child: Text("Confirmar"),
-                ),
+                Spacer(),
+                ThemeSwitch()
               ],
             ),
-          ),
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Logotext(),
+                  Text(
+                    "Crie sua conta - Psicologo",
+                    style: TextStyle(
+                        fontSize: 16,
+                        color: themeNotifier.isDarkMode
+                            ? Colors.white54
+                            : Colors.black54,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 16),
+                  SizedBox(height: 16),
+                  TextField(
+                    decoration: InputDecoration(
+                      labelText: "Nome",
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  SizedBox(height: 16),
+                  TextField(
+                    decoration: InputDecoration(
+                      labelText: "Email",
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  SizedBox(height: 16),
+                  TextField(
+                    decoration: InputDecoration(
+                        labelText: "Senha",
+                        border: OutlineInputBorder(),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _showPassword
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _showPassword = !_showPassword;
+                            });
+                          },
+                        )),
+                    obscureText: !_showPassword,
+                  ),
+                  SizedBox(height: 16),
+                  TextField(
+                    decoration: InputDecoration(
+                      labelText: "CPF",
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  SizedBox(height: 16),
+                  TextField(
+                    decoration: InputDecoration(
+                      labelText: "Nome da clínica",
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  SizedBox(height: 16),
+                  TextField(
+                    decoration: InputDecoration(
+                      labelText: "CRM",
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  SizedBox(height: 16),
+                  Row(
+                    children: [
+                      Checkbox(
+                        value: _isTermsAccepted,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            _isTermsAccepted = value ?? false;
+                          });
+                        },
+                      ),
+                      Row(
+                        children: [
+                          Text("Aceito os "),
+                          Text("Termo de uso", style: TextStyle(color: Colors.blue),)
+                        ],
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: _isTermsAccepted ? _confirmRegistration : null,
+                    child: Text("Confirmar"),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
-      )
-    );
+      ),
+    ));
   }
 }

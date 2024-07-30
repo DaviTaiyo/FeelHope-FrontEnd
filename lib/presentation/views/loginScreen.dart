@@ -1,5 +1,8 @@
+import 'package:feelhope/components/gradient_textField.dart';
 import 'package:feelhope/components/gradiente_button.dart';
 import 'package:feelhope/components/gradiente_text.dart';
+import 'package:feelhope/components/logoText.dart';
+import 'package:feelhope/components/switchTheme.dart';
 import 'package:feelhope/components/themeNotifier.dart';
 import 'package:feelhope/presentation/views/forgotPasswordScreen.dart';
 import 'package:feelhope/presentation/views/homePagePsyScreen.dart';
@@ -29,23 +32,14 @@ class _LoginscreenState extends State<Loginscreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 30),
-                Row(
-                  children: [
-                    Spacer(),
-                    Icon(themeNotifier.isDarkMode ? Icons.light_mode : Icons.dark_mode),
-                    Switch(value: themeNotifier.isDarkMode, onChanged: (value) {themeNotifier.toggleTheme();}),
-                  ],
-                ),
-                SizedBox(
-                    height: 40,
+                SizedBox(height: 20),
+                  Row(
+                    children: [
+                      Spacer(),
+                      ThemeSwitch(),
+                    ],
                   ),
-                  GradienteText(
-                    text: "Feel Hope",
-                    gradient: LinearGradient(
-                        colors: [Color(0xFF7F7FFF), Color(0xFF9A4DFF), Color(0xFF7F7FFF)]),
-                    style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
-                  ),
+                  Logotext(),
                   Text("Vai se tratar main yasuo dos infernos", style: TextStyle(fontSize: 16, color: themeNotifier.isDarkMode ? Colors.white54 : Colors.black54, fontWeight: FontWeight.bold),),
                 Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -61,6 +55,8 @@ class _LoginscreenState extends State<Loginscreen> {
                         ),
                       ),
                       SizedBox(height: 20),
+                      GradientTextField(hintText: "E-mail"),
+                      SizedBox(height: 10,),
                       TextField(
                         controller: _passwordController,
                         obscureText: !showPassword,
