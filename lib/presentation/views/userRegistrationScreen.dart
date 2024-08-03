@@ -1,3 +1,5 @@
+import 'package:feelhope/components/gradient_textField.dart';
+import 'package:feelhope/components/gradiente_button.dart';
 import 'package:feelhope/components/gradiente_text.dart';
 import 'package:feelhope/components/logoText.dart';
 import 'package:feelhope/components/switchTheme.dart';
@@ -43,66 +45,65 @@ class _UserRegistrationScreenState extends State<UserRegistrationScreen> {
     final themeNotifier = Provider.of<ThemeNotifier>(context);
 
     return Scaffold(
-        body: SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 40, 20, 20),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                IconButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  icon: Icon(Icons.arrow_back),
-                  iconSize: 30,
-                ),
-                Text(
-                  "Voltar",
-                  style: TextStyle(
-                    color: themeNotifier.isDarkMode
-                        ? Colors.white54
-                        : Colors.black54,
-                  ),
-                ),
-                Spacer(),
-                ThemeSwitch(),
-              ],
-            ),
-            Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+        body: SafeArea(
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 0, 20, 0),
+          child: Column(
+            children: [
+              Row(
                 children: [
-                  Logotext(),
+                  IconButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: Icon(Icons.arrow_back),
+                    iconSize: 30,
+                  ),
                   Text(
-                    "Crie sua conta - Usuario",
+                    "Voltar",
                     style: TextStyle(
-                        fontSize: 16,
-                        color: themeNotifier.isDarkMode
-                            ? Colors.white54
-                            : Colors.black54,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 40),
-                  TextField(
-                    decoration: InputDecoration(
-                      labelText: "Nome",
-                      border: OutlineInputBorder(),
+                      color: themeNotifier.isDarkMode
+                          ? Colors.white54
+                          : Colors.black54,
                     ),
                   ),
-                  SizedBox(height: 16),
-                  TextField(
-                    decoration: InputDecoration(
-                      labelText: "Email",
-                      border: OutlineInputBorder(),
+                  Spacer(),
+                  ThemeSwitch(),
+                ],
+              ),
+              Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Logotext(),
+                    Text(
+                      "Crie sua conta - Usuario",
+                      style: TextStyle(
+                          fontSize: 16,
+                          color: themeNotifier.isDarkMode
+                              ? Colors.white54
+                              : Colors.black54,
+                          fontWeight: FontWeight.bold),
                     ),
-                  ),
-                  SizedBox(height: 16),
-                  TextField(
-                    decoration: InputDecoration(
-                        labelText: "Senha",
-                        border: OutlineInputBorder(),
-                        suffixIcon: IconButton(
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 40, 0, 8),
+                      child: GradientTextField(hintText: "Nome"),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+                      child: GradientTextField(hintText: "Sobrenome"),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+                      child: GradientTextField(hintText: "E-mail"),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+                      child: GradientTextField(
+                        hintText: "Senha",
+                        obscureText: _showPassword,
+                        suffixButton: IconButton(
                           icon: Icon(
                             _showPassword
                                 ? Icons.visibility
@@ -113,65 +114,65 @@ class _UserRegistrationScreenState extends State<UserRegistrationScreen> {
                               _showPassword = !_showPassword;
                             });
                           },
-                        )),
-                    obscureText: !_showPassword,
-                  ),
-                  SizedBox(height: 16),
-                  TextField(
-                    decoration: InputDecoration(
-                      labelText: "CPF",
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  SizedBox(height: 16),
-                  TextField(
-                    decoration: InputDecoration(
-                      labelText: "Telefone",
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  SizedBox(height: 16),
-                  Row(
-                    children: [
-                      Checkbox(
-                        value: _isTermsAccepted,
-                        onChanged: (bool? value) {
-                          setState(() {
-                            _isTermsAccepted = value ?? false;
-                          });
-                        },
+                        ),
                       ),
-                      Row(
-                        children: [
-                          Text("Aceito os "),
-                          Text(
-                            "Termo de uso",
-                            style: TextStyle(color: Colors.blue),
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                  SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: _isTermsAccepted ? _confirmRegistration : null,
-                    child: Text("Confirmar"),
-                  ),
-                  SizedBox(height: 16),
-                  TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  PsychologistRegisterScreen()),
-                        );
-                      },
-                      child: Text("Você é Paciente ? faça sua conta aqui"))
-                ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+                      child: GradientTextField(hintText: "Cpf"),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+                      child: GradientTextField(hintText: "Telefone"),
+                    ),
+                    SizedBox(height: 8),
+                    Row(
+                      children: [
+                        Checkbox(
+                          value: _isTermsAccepted,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              _isTermsAccepted = value ?? false;
+                            });
+                          },
+                        ),
+                        Row(
+                          children: [
+                            Text("Aceito os "),
+                            Text(
+                              "Termo de uso",
+                              style: TextStyle(color: Colors.blue),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                    SizedBox(height: 8),
+                    GradienteButton(
+                          text: "Confirmar",
+                          onPressed: () {_isTermsAccepted ? _confirmRegistration : null;
+                          },
+                          width: 130,
+                          gradient: LinearGradient(
+                              colors: [Color(0xFF7F7FFF), Color(0xFF9A4DFF)]),
+                          textColor: Colors.white,
+                        ),
+                    SizedBox(height: 8),
+                    TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    PsychologistRegisterScreen()),
+                          );
+                        },
+                        child: Text("Você é Paciente ? faça sua conta aqui"))
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     ));
