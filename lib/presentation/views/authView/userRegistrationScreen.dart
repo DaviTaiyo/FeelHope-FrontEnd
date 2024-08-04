@@ -3,7 +3,7 @@ import 'package:feelhope/components/gradiente_button.dart';
 import 'package:feelhope/components/logoText.dart';
 import 'package:feelhope/components/switchTheme.dart';
 import 'package:feelhope/components/themeNotifier.dart';
-import 'package:feelhope/presentation/views/psychologistRegistrationScreen.dart';
+import 'package:feelhope/presentation/views/authView/psychologistRegistrationScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

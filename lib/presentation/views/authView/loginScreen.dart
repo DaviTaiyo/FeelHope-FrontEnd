@@ -3,11 +3,11 @@ import 'package:feelhope/components/gradiente_button.dart';
 import 'package:feelhope/components/logoText.dart';
 import 'package:feelhope/components/switchTheme.dart';
 import 'package:feelhope/components/themeNotifier.dart';
-import 'package:feelhope/presentation/views/forgotPasswordScreen.dart';
-import 'package:feelhope/presentation/views/userView/userRegistrationScreen.dart';
+import 'package:feelhope/presentation/views/authView/forgotPasswordScreen.dart';
+import 'package:feelhope/presentation/views/authView/userRegistrationScreen.dart';
 import 'package:feelhope/presentation/views/userView/user_homePage.dart';
 import 'package:flutter/material.dart';
-import '../state/login_state.dart';
+import '../../state/login_state.dart';
 import 'package:provider/provider.dart';
 
 class Loginscreen extends StatefulWidget {

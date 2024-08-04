@@ -10,7 +10,7 @@ import 'data/repositories/user_repository_impl.dart';
 import 'domain/usecases/login_user.dart';
 import 'external/api/api_service.dart';
 import 'presentation/state/login_state.dart';
-import 'presentation/views/loginScreen.dart';
+import 'presentation/views/authView/loginScreen.dart';
 
 void main() {
   final apiService = ApiService();

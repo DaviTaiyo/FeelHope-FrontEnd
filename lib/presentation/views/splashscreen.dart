@@ -1,4 +1,4 @@
-import 'package:feelhope/presentation/views/loginScreen.dart';
+import 'package:feelhope/presentation/views/authView/loginScreen.dart';
 import 'package:flutter/material.dart';
 
 class Splashscreen extends StatefulWidget {
