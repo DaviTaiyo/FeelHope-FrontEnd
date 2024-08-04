@@ -1,12 +1,10 @@
 import 'package:feelhope/components/gradient_textField.dart';
 import 'package:feelhope/components/gradiente_button.dart';
-import 'package:feelhope/components/gradiente_text.dart';
 import 'package:feelhope/components/logoText.dart';
 import 'package:feelhope/components/switchTheme.dart';
 import 'package:feelhope/components/themeNotifier.dart';
 import 'package:feelhope/presentation/views/forgotPasswordScreen.dart';
-import 'package:feelhope/presentation/views/homePagePsyScreen.dart';
-import 'package:feelhope/presentation/views/userRegistrationScreen.dart';
+import 'package:feelhope/presentation/views/userView/user_homePage.dart';
 import 'package:flutter/material.dart';
 import '../state/login_state.dart';
 import 'package:provider/provider.dart';
@@ -18,7 +16,7 @@ class Loginscreen extends StatefulWidget {
 
 class _LoginscreenState extends State<Loginscreen> {
   final _usernameController = TextEditingController();
-  final _passwordController = TextEditingController();
+  //final _passwordController = TextEditingController();
   bool showPassword = false;
 
   @override
@@ -92,10 +90,16 @@ class _LoginscreenState extends State<Loginscreen> {
                         GradienteButton(
                           text: "Login",
                           onPressed: () {
-                            final loginState =
-                                Provider.of<LoginState>(context, listen: false);
-                            loginState.login(_usernameController.text,
-                                _passwordController.text);
+                            Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    UserHomepage()),
+                          );
+                            // final loginState =
+                            //     Provider.of<LoginState>(context, listen: false);
+                            // loginState.login(_usernameController.text,
+                            //     _passwordController.text);
                           },
                           width: 130,
                           gradient: LinearGradient(
@@ -122,13 +126,7 @@ class _LoginscreenState extends State<Loginscreen> {
                               child: Text("Cadastrar-se",
                                   style: TextStyle(color: Colors.purple)),
                               onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          UserRegistrationScreen() //se quiser ver a pagina inicial, <= MUDE PARA HOMEPAGE()
-                                      ),
-                                );
+                                Navigator.pushReplacementNamed(context, "/home");
                               },
                             ),
                           ],

@@ -1,4 +1,8 @@
 import 'package:feelhope/components/themeNotifier.dart';
+import 'package:feelhope/presentation/views/userView/User_EditProfileScreen.dart';
+import 'package:feelhope/presentation/views/userView/document_user.dart';
+import 'package:feelhope/presentation/views/userView/user_homePage.dart';
+import 'package:feelhope/presentation/views/userView/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'data/datasources/remote/user_remote_datasource.dart';
@@ -34,6 +38,12 @@ class MyApp extends StatelessWidget {
           title: 'Feel Hope',
           theme: themeNotifier.currentTheme,
           home: Loginscreen(),
+          routes: {
+            "/home": (context) => UserHomepage(),
+            "/profile": (context) => ProfileScreen(),
+            "/edit-profile": (context) => EditProfileScreen(),
+            "/documents": (context) => DocumentScreen(),
+          },
         );
       },
     );

@@ -155,16 +155,18 @@ class _PsychologistRegisterScreenState
                         ),
                       ],
                     ),
-                    SizedBox(height: 8),
-                    GradienteButton(
-                          text: "Confirmar",
-                          onPressed: () {_isTermsAccepted ? _confirmRegistration : null;
-                          },
-                          width: 130,
-                          gradient: LinearGradient(
-                              colors: [Color(0xFF7F7FFF), Color(0xFF9A4DFF)]),
-                          textColor: Colors.white,
-                        ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 10, 0, 20),
+                      child: GradienteButton(
+                            text: "Confirmar",
+                            onPressed: () {_isTermsAccepted ? _confirmRegistration : null;
+                            },
+                            width: 130,
+                            gradient: LinearGradient(
+                                colors: [Color(0xFF7F7FFF), Color(0xFF9A4DFF)]),
+                            textColor: Colors.white,
+                          ),
+                    ),
                   ],
                 ),
               ),

@@ -1,6 +1,5 @@
 import 'package:feelhope/components/gradient_textField.dart';
 import 'package:feelhope/components/gradiente_button.dart';
-import 'package:feelhope/components/gradiente_text.dart';
 import 'package:feelhope/components/logoText.dart';
 import 'package:feelhope/components/switchTheme.dart';
 import 'package:feelhope/components/themeNotifier.dart';

@@ -2,17 +2,21 @@ import 'package:feelhope/components/themeNotifier.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class GradientTextField extends StatelessWidget {
-  final String hintText;
+class GradientFormField extends StatelessWidget {
+  final String label;
   final bool obscureText;
   final TextEditingController controller;
   final IconButton? suffixButton;
+  final TextInputType inputType;
+  final String? Function(String?)? validator;
 
-  GradientTextField({
-    required this.hintText,
+  GradientFormField({
+    required this.label,
     this.obscureText = false,
     this.suffixButton,
+    this.inputType = TextInputType.text,
     TextEditingController? controller,
+    this.validator,
   }) : controller = controller ?? TextEditingController();
 
   @override
@@ -32,21 +36,27 @@ class GradientTextField extends StatelessWidget {
           end: Alignment.bottomRight,
         ),
       ),
-      child: TextField(
+      child: TextFormField(
         controller: controller,
         obscureText: obscureText,
+        keyboardType: inputType,
         decoration: InputDecoration(
           filled: true,
           fillColor: Colors.transparent,
-          labelText: hintText,
-          labelStyle: TextStyle(color: themeNotifier.isDarkMode? Colors.white : Colors.black87),
+          labelText: label,
+          labelStyle: TextStyle(
+            color: themeNotifier.isDarkMode ? Colors.white : Colors.black87,
+          ),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
           ),
           contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           suffixIcon: suffixButton,
         ),
-        style: TextStyle(color: themeNotifier.isDarkMode? Colors.white : Colors.black87),
+        style: TextStyle(
+          color: themeNotifier.isDarkMode ? Colors.white : Colors.black87,
+        ),
+        validator: validator,
       ),
     );
   }
