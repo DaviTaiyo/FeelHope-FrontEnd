@@ -89,7 +89,7 @@ class ReportCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
-        title: Text("Ultimos relatórios reportados em $period:"),
+        title: Text("Ultimos relatórios reportado em $period:"),
         subtitle: Text(reports),
         trailing: ElevatedButton(
           onPressed: () {},
