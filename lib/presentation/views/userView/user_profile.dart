@@ -1,4 +1,5 @@
 import 'package:feelhope/components/gradiente_button.dart';
+import 'package:feelhope/components/switchTheme.dart';
 import 'package:feelhope/presentation/views/userView/User_EditProfileScreen.dart';
 import 'package:flutter/material.dart';
 
@@ -8,6 +9,9 @@ class ProfileScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Perfil'),
+        actions: [
+          ThemeSwitch(),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

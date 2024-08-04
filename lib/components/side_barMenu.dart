@@ -42,19 +42,19 @@ class SideBarMenu extends StatelessWidget {
             ),
           ),
           buildMenuItem(Icons.home, 'Home', () {
-            Navigator.pushReplacementNamed(context, '/home');
+            Navigator.pushNamed(context, '/home');
           }),
           buildMenuItem(Icons.person, 'Profile', () {
-            Navigator.pushReplacementNamed(context, '/profile');
+            Navigator.pushNamed(context, '/profile');
           }),
           buildMenuItem(Icons.description_sharp, 'Documents', () {
-            Navigator.pushReplacementNamed(context, '/documents');
+            Navigator.pushNamed(context, '/documents');
           }),
           buildMenuItem(Icons.settings, 'Settings', () {
-            Navigator.pushReplacementNamed(context, '/settings');
+            Navigator.pushNamed(context, '/settings');
           }),
           buildMenuItem(Icons.help_outline, 'Help', () {
-            Navigator.pushReplacementNamed(context, '/help');
+            Navigator.pushNamed(context, '/help');
           }),
           Divider(),
           buildMenuItem(Icons.logout, 'Logout', () {

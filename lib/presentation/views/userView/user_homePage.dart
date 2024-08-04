@@ -1,3 +1,4 @@
+import 'package:feelhope/components/gradiente_button.dart';
 import 'package:feelhope/components/side_barMenu.dart';
 import 'package:feelhope/components/switchTheme.dart';
 import 'package:feelhope/components/themeNotifier.dart';
@@ -5,14 +6,21 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class UserHomepage extends StatelessWidget {
+class UserHomepage extends StatefulWidget {
+  @override
+  _UserHomepageState createState() => _UserHomepageState();
+}
+
+class _UserHomepageState extends State<UserHomepage> {
+  int touchedIndex = -1;
+
   @override
   Widget build(BuildContext context) {
     final themeNotifier = Provider.of<ThemeNotifier>(context);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Dashboard'),
+        title: Text('Menu Principal'),
         actions: [
           ThemeSwitch(),
         ],
@@ -61,69 +69,57 @@ class UserHomepage extends StatelessWidget {
                         themeNotifier.isDarkMode ? Colors.white : Colors.black,
                   ),
                 ),
-                SizedBox(height: 10),
-                SizedBox(
-                  height: 200,
-                  child: PieChart(
-                    PieChartData(
-                      sections: [
-                        PieChartSectionData(
-                          value: 40,
-                          color: Colors.blue,
-                          title: '40%',
-                          radius: 50,
-                          titleStyle: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 10, 0, 20),
+                  child: SizedBox(
+                    height: 200,
+                    child: PieChart(
+                      PieChartData(
+                        pieTouchData: PieTouchData(
+                          touchCallback: (FlTouchEvent event, pieTouchResponse) {
+                            setState(() {
+                              if (pieTouchResponse != null &&
+                                  pieTouchResponse.touchedSection != null) {
+                                touchedIndex = pieTouchResponse
+                                    .touchedSection!.touchedSectionIndex;
+                              } else {
+                                touchedIndex = -1;
+                              }
+                            });
+                          },
                         ),
-                        PieChartSectionData(
-                          value: 30,
-                          color: Colors.green,
-                          title: '30%',
-                          radius: 50,
-                          titleStyle: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        PieChartSectionData(
-                          value: 20,
-                          color: Colors.orange,
-                          title: '20%',
-                          radius: 50,
-                          titleStyle: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        PieChartSectionData(
-                          value: 10,
-                          color: Colors.red,
-                          title: '10%',
-                          radius: 50,
-                          titleStyle: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
+                        sections: _showingSections(),
+                      ),
+                      swapAnimationDuration:
+                          Duration(milliseconds: 150), // Duração da animação
+                      swapAnimationCurve: Curves.easeInOut, // Curva da animação
                     ),
                   ),
                 ),
-                SizedBox(height: 20),
                 buildLegendItem(Colors.blue, 'Tristeza e Angústia'),
                 buildLegendItem(Colors.green, 'Felicidade e Motivação'),
                 buildLegendItem(Colors.orange, 'Neutro'),
                 buildLegendItem(Colors.red, 'Estresse'),
-                SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    buildButton(context,
-                        'Teve algum problema?\nRepasse para seu psicologo'),
-                    buildButton(context, 'Meus Relatórios'),
-                  ],
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      GradienteButton(
+                          text: "Relatar meu dia",
+                          onPressed: () {},
+                          gradient: LinearGradient(
+                              colors: [Color(0xFF7F7FFF), Color(0xFF9A4DFF)]),
+                          textColor: Colors.white),
+                      Divider(),
+                      GradienteButton(
+                          text: "Meus relatorios",
+                          onPressed: () {},
+                          gradient: LinearGradient(
+                              colors: [Color(0xFF9A4DFF), Color(0xFF7F7FFF)]),
+                          textColor: Colors.white),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -131,6 +127,67 @@ class UserHomepage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  List<PieChartSectionData> _showingSections() {
+    return List.generate(4, (i) {
+      final isTouched = i == touchedIndex;
+      final double fontSize = isTouched ? 25 : 16;
+      final double radius = isTouched ? 60 : 50;
+
+      switch (i) {
+        case 0:
+          return PieChartSectionData(
+            color: Colors.blue,
+            value: 40,
+            title: '40%',
+            radius: radius,
+            titleStyle: TextStyle(
+              fontSize: fontSize,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          );
+        case 1:
+          return PieChartSectionData(
+            color: Colors.green,
+            value: 30,
+            title: '30%',
+            radius: radius,
+            titleStyle: TextStyle(
+              fontSize: fontSize,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          );
+        case 2:
+          return PieChartSectionData(
+            color: Colors.orange,
+            value: 20,
+            title: '20%',
+            radius: radius,
+            titleStyle: TextStyle(
+              fontSize: fontSize,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          );
+        case 3:
+          return PieChartSectionData(
+            color: Colors.red,
+            value: 10,
+            title: '10%',
+            radius: radius,
+            titleStyle: TextStyle(
+              fontSize: fontSize,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          );
+        default:
+          throw Error();
+      }
+    });
   }
 
   Widget buildLegendItem(Color color, String text) {
@@ -148,24 +205,6 @@ class UserHomepage extends StatelessWidget {
             child: Text(text, style: TextStyle(fontSize: 16)),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget buildButton(BuildContext context, String text) {
-    return Expanded(
-      child: Container(
-        margin: EdgeInsets.all(8),
-        padding: EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          color: Colors.black.withOpacity(0.8),
-        ),
-        child: Text(
-          text,
-          style: TextStyle(color: Colors.white),
-          textAlign: TextAlign.center,
-        ),
       ),
     );
   }

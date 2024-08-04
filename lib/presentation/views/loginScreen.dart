@@ -4,6 +4,7 @@ import 'package:feelhope/components/logoText.dart';
 import 'package:feelhope/components/switchTheme.dart';
 import 'package:feelhope/components/themeNotifier.dart';
 import 'package:feelhope/presentation/views/forgotPasswordScreen.dart';
+import 'package:feelhope/presentation/views/userView/userRegistrationScreen.dart';
 import 'package:feelhope/presentation/views/userView/user_homePage.dart';
 import 'package:flutter/material.dart';
 import '../state/login_state.dart';
@@ -52,7 +53,8 @@ class _LoginscreenState extends State<Loginscreen> {
                       children: [
                         SizedBox(height: 50),
                         GradientTextField(
-                            hintText: "E-mail", controller: _usernameController),
+                            hintText: "E-mail",
+                            controller: _usernameController),
                         SizedBox(
                           height: 20,
                         ),
@@ -90,12 +92,7 @@ class _LoginscreenState extends State<Loginscreen> {
                         GradienteButton(
                           text: "Login",
                           onPressed: () {
-                            Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    UserHomepage()),
-                          );
+                            Navigator.pushReplacementNamed(context, "/home");
                             // final loginState =
                             //     Provider.of<LoginState>(context, listen: false);
                             // loginState.login(_usernameController.text,
@@ -126,7 +123,13 @@ class _LoginscreenState extends State<Loginscreen> {
                               child: Text("Cadastrar-se",
                                   style: TextStyle(color: Colors.purple)),
                               onPressed: () {
-                                Navigator.pushReplacementNamed(context, "/home");
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        UserRegistrationScreen(),
+                                  ),
+                                );
                               },
                             ),
                           ],

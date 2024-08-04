@@ -1,5 +1,6 @@
 import 'package:feelhope/components/gradient_formFIeld.dart';
 import 'package:feelhope/components/gradiente_button.dart';
+import 'package:feelhope/components/switchTheme.dart';
 import 'package:flutter/material.dart';
 
 class EditProfileScreen extends StatefulWidget {
@@ -21,6 +22,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Editar Perfil'),
+        actions: [
+          ThemeSwitch(),
+        ],
       ),
       body: SafeArea(
         child: Padding(

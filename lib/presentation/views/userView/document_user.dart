@@ -1,3 +1,4 @@
+import 'package:feelhope/components/switchTheme.dart';
 import 'package:flutter/material.dart';
 
 class DocumentScreen extends StatelessWidget {
@@ -5,7 +6,10 @@ class DocumentScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Perfil'),
+        title: Text('Documentos'),
+        actions: [
+          ThemeSwitch(),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
