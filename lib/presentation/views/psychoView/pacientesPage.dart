@@ -7,7 +7,7 @@ class PacientesPage extends StatefulWidget {
 
 class _PacientesPageState extends State<PacientesPage> {
   final TextEditingController _searchController = TextEditingController();
-  final List<String> pacientes = ["Guilherme Mendes", "Maria Julia", "Lucas Poggers"];
+  final List<String> pacientes = ["Guilherme Mendes", "Maria Julia", "Lucas Augusto"];
   List<String> _filteredPacientes = [];
 
   @override
@@ -38,7 +38,7 @@ class _PacientesPageState extends State<PacientesPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Pacientes"),
-        backgroundColor: Colors.purple,
+        backgroundColor: Color(0xFF9A4DFF),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -48,7 +48,16 @@ class _PacientesPageState extends State<PacientesPage> {
               controller: _searchController,
               decoration: InputDecoration(
                 labelText: "Procure por paciente",
-                suffixIcon: Icon(Icons.search),
+                labelStyle: TextStyle(color: Colors.black),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Color(0xFF7F7FFF)),
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Color(0xFF9A4DFF)),
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+                suffixIcon: Icon(Icons.search, color: Color(0xFF9A4DFF)),
               ),
             ),
             SizedBox(height: 20),
@@ -56,14 +65,23 @@ class _PacientesPageState extends State<PacientesPage> {
               child: ListView.builder(
                 itemCount: _filteredPacientes.length,
                 itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(_filteredPacientes[index]),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => PacienteDetailPage(nome: _filteredPacientes[index])),
-                      );
-                    },
+                  return Card(
+                    color: Color(0xFFE8EAF6),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    child: ListTile(
+                      title: Text(
+                        _filteredPacientes[index],
+                        style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => PacienteDetailPage(nome: _filteredPacientes[index])),
+                        );
+                      },
+                    ),
                   );
                 },
               ),
@@ -76,6 +94,11 @@ class _PacientesPageState extends State<PacientesPage> {
                   MaterialPageRoute(builder: (context) => RemoverPacientePage(pacientes: pacientes)),
                 );
               },
+              style: TextButton.styleFrom(
+                backgroundColor: Color(0xFF9A4DFF),
+                foregroundColor: Colors.white,
+                padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+              ),
               child: Text("Remover algum paciente?"),
             ),
           ],
@@ -109,7 +132,7 @@ class PacienteDetailPage extends StatelessWidget {
         "Tristeza": "30%",
         "Felicidade": "70%",
       },
-      "Lucas Poggers": {
+      "Lucas Augusto": {
         "Idade": "55",
         "Contato": "(55)1234-5678",
         "Total de Relatórios": "30",
@@ -124,7 +147,7 @@ class PacienteDetailPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Detalhes do Paciente"),
-        backgroundColor: Colors.purple,
+        backgroundColor: Color(0xFF9A4DFF),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -133,7 +156,17 @@ class PacienteDetailPage extends StatelessWidget {
           children: info.entries.map((entry) {
             return Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: Text("${entry.key}: ${entry.value}"),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Color(0xFFE8EAF6),
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                padding: const EdgeInsets.all(12.0),
+                child: Text(
+                  "${entry.key}: ${entry.value}",
+                  style: TextStyle(fontSize: 16, color: Colors.black87),
+                ),
+              ),
             );
           }).toList(),
         ),
@@ -152,7 +185,7 @@ class RemoverPacientePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Remover Pacientes"),
-        backgroundColor: Colors.purple,
+        backgroundColor: Color(0xFF9A4DFF),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -161,7 +194,16 @@ class RemoverPacientePage extends StatelessWidget {
             TextField(
               decoration: InputDecoration(
                 labelText: "Nome",
-                suffixIcon: Icon(Icons.search),
+                labelStyle: TextStyle(color: Color(0xFF7F7FFF)),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Color(0xFF7F7FFF)),
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Color(0xFF9A4DFF)),
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+                suffixIcon: Icon(Icons.search, color: Color(0xFF9A4DFF)),
               ),
               onChanged: (value) {},
             ),
@@ -170,14 +212,23 @@ class RemoverPacientePage extends StatelessWidget {
               child: ListView.builder(
                 itemCount: pacientes.length,
                 itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(pacientes[index]),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => SelecionarMotivoRemoverPage(paciente: pacientes[index])),
-                      );
-                    },
+                  return Card(
+                    color: Color(0xFFE8EAF6), // Tom claro para contraste
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    child: ListTile(
+                      title: Text(
+                        pacientes[index],
+                        style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => SelecionarMotivoRemoverPage(paciente: pacientes[index])),
+                        );
+                      },
+                    ),
                   );
                 },
               ),
@@ -208,15 +259,16 @@ class _SelecionarMotivoRemoverPageState extends State<SelecionarMotivoRemoverPag
     return Scaffold(
       appBar: AppBar(
         title: Text("Remover ${widget.paciente}"),
-        backgroundColor: Colors.purple,
+        backgroundColor: Color(0xFF9A4DFF),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
             CheckboxListTile(
-              title: Text("Não consulta mais"),
+              title: Text("Não consulta mais", style: TextStyle(color: Colors.black87)),
               value: _naoConsulta,
+              activeColor: Color(0xFF7F7FFF),
               onChanged: (value) {
                 setState(() {
                   _naoConsulta = value!;
@@ -224,8 +276,9 @@ class _SelecionarMotivoRemoverPageState extends State<SelecionarMotivoRemoverPag
               },
             ),
             CheckboxListTile(
-              title: Text("Outros motivos"),
+              title: Text("Outros motivos", style: TextStyle(color: Colors.black87)),
               value: _outrosMotivos,
+              activeColor: Color(0xFF7F7FFF),
               onChanged: (value) {
                 setState(() {
                   _outrosMotivos = value!;
@@ -233,8 +286,9 @@ class _SelecionarMotivoRemoverPageState extends State<SelecionarMotivoRemoverPag
               },
             ),
             CheckboxListTile(
-              title: Text("Está melhor"),
+              title: Text("Está melhor", style: TextStyle(color: Colors.black87)),
               value: _estaMelhor,
+              activeColor: Color(0xFF7F7FFF),
               onChanged: (value) {
                 setState(() {
                   _estaMelhor = value!;
@@ -250,6 +304,13 @@ class _SelecionarMotivoRemoverPageState extends State<SelecionarMotivoRemoverPag
                   SnackBar(content: Text("${widget.paciente} removido com sucesso!")),
                 );
               },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color(0xFF9A4DFF),
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+              ),
               child: Text("Confirmar"),
             ),
           ],

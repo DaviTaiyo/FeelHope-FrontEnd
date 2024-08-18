@@ -9,6 +9,7 @@ import 'package:feelhope/presentation/views/userView/user_homePage.dart';
 import 'package:flutter/material.dart';
 import '../../state/login_state.dart';
 import 'package:provider/provider.dart';
+import 'package:feelhope/presentation/views/psychoView/homePagePsyScreen.dart';
 
 class Loginscreen extends StatefulWidget {
   @override
@@ -115,7 +116,7 @@ class _LoginscreenState extends State<Loginscreen> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          ForgotPasswordScreen()),
+                                          HomePage()),
                                 );
                               },
                             ),

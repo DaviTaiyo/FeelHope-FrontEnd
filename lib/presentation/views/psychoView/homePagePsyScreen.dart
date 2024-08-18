@@ -1,3 +1,8 @@
+import 'package:feelhope/presentation/views/authView/loginScreen.dart';
+import 'package:feelhope/presentation/views/psychoView/calendarPage.dart';
+import 'package:feelhope/presentation/views/psychoView/pacientesPage.dart';
+import 'package:feelhope/presentation/views/psychoView/psyProfileScreen.dart';
+import 'package:feelhope/presentation/views/psychoView/relatoriosPacientesPage.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -18,65 +23,198 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.purple,
-        toolbarHeight: 50,
-        title: Row(
-          children: [
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => AccountInfoPage()),
-                );
-              },
-              child: CircleAvatar(
-                backgroundImage: AssetImage("assets/icon.jpg"),
-              ),
-            ),
-            SizedBox(width: 10),
-            Text("Foto"),
-            Spacer(),
-            IconButton(
-              icon: Icon(Icons.info),
-              onPressed: () {},
-            ),
-          ],
+        backgroundColor: Colors.white,
+        elevation: 0,
+        title: Text(
+          'Menu Principal',
+          style: TextStyle(color: Colors.black),
         ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.dark_mode, color: Colors.black),
+            onPressed: () {},
+          ),
+        ],
       ),
+      drawer: SideBarMenu(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Teste de Texto", style: TextStyle(fontSize: 18)),
+            Container(
+              padding: EdgeInsets.all(16.0),
+              decoration: BoxDecoration(
+                color: Color(0xFF9A4DFF),
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              child: Row(
+                children: [
+                  Icon(Icons.thumb_up, color: Colors.white),
+                  SizedBox(width: 10),
+                  Expanded(
+                    child: Text(
+                      "Recomendações\nIndicado por 8/10 psicólogos",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ],
+              ),
+            ),
             SizedBox(height: 20),
-            ReportCard(period: "24 Horas", reports: "Quatro novos relatórios"),
-            ReportCard(period: "7 Dias", reports: "Quatro novos relatórios"),
-            ReportCard(period: "30 Dias", reports: "Quatro novos relatórios"),
+            ReportCard(
+              period: "24 Horas",
+              reports: "Quatro novos relatórios",
+            ),
+            SizedBox(height: 40), 
+            Center(
+              child: Text(
+                "Agenda das Sessões dos Pacientes",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+            ),
+            SizedBox(height: 10),
+            Center(
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => CalendarPage()),
+                  );
+                },
+                child: Text("Ver Calendário"),
+              ),
+            ),
+            SizedBox(height: 20),
+            Center(
+              child: Text(
+                "A saúde mental é fundamental para o bem-estar geral,\ne o papel do psicólogo é essencial na promoção e manutenção desse bem-estar.",
+                style: TextStyle(
+                  fontStyle: FontStyle.italic,
+                  color: Colors.grey,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.purple,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home, color: Colors.black),
-            label: "Home",
-            backgroundColor: Colors.white,
+    );
+  }
+}
+
+class SideBarMenu extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          UserAccountsDrawerHeader(
+            accountName: Text("Nome do Usuário"),
+            accountEmail: Text("user@example.com"),
+            currentAccountPicture: CircleAvatar(
+              backgroundImage: AssetImage("assets/icon.jpg"),
+            ),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Color(0xFF9A4DFF),
+                  Color(0xFF7F7FFF),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+            ),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search, color: Colors.black),
-            label: "Pacientes",
-            backgroundColor: Colors.white,
+          ListTile(
+            leading: Icon(Icons.home),
+            title: Text("Home"),
+            onTap: () {},
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.file_copy, color: Colors.black),
-            label: "Relatórios",
-            backgroundColor: Colors.white,
+          ListTile(
+            leading: Icon(Icons.person),
+            title: Text("Profile"),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ProfileScreen())
+              );
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.file_copy),
+            title: Text("Relatórios"),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => RelatoriosPacientesPage())
+              );
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.search),
+            title: Text("Pacientes"),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => PacientesPage()),
+              );
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.settings),
+            title: Text("Settings"),
+            onTap: () {},
+          ),
+          ListTile(
+            leading: Icon(Icons.help),
+            title: Text("Help"),
+            onTap: () {},
+          ),
+          ListTile(
+            leading: Icon(Icons.logout),
+            title: Text("Logout"),
+            onTap: () async {
+              bool shouldLogout = await showLogoutConfirmation(context);
+              if (shouldLogout) {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => Loginscreen()),
+                );
+              }
+            },
           ),
         ],
       ),
     );
   }
+}
+
+Future<bool> showLogoutConfirmation(BuildContext context) async {
+  return await showDialog<bool>(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text("Deseja sair?"),
+        content: Text("Tem certeza que deseja sair?"),
+        actions: <Widget>[
+          TextButton(
+            child: Text("Não"),
+            onPressed: () {
+              Navigator.of(context).pop(false);
+            },
+          ),
+          TextButton(
+            child: Text("Sim"),
+            onPressed: () {
+              Navigator.of(context).pop(true);
+            },
+          ),
+        ],
+      );
+    },
+  ) ?? false;
 }
 
 class ReportCard extends StatelessWidget {
@@ -89,60 +227,22 @@ class ReportCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
-        title: Text("Ultimos relatórios reportado em $period:"),
+        title: Text("Últimos relatórios reportados em $period:"),
         subtitle: Text(reports),
         trailing: ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => RelatoriosPacientesPage()), 
+            );
+          },
           child: Text("Checar"),
-        ),
-      ),
-    );
-  }
-}
-
-class AccountInfoPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Informações da Conta"),
-        backgroundColor: Colors.purple,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ProfileCard(infoTitle: "Nome", infoDetail: "Gui"),
-            ProfileCard(infoTitle: "Email", infoDetail: "gui123@poggers.com"),
-            ProfileCard(infoTitle: "Nome da clínica", infoDetail: "PoggersLTDA"),
-            ProfileCard(infoTitle: "CRM", infoDetail: "08/4874"),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class ProfileCard extends StatelessWidget {
-  final String infoTitle;
-  final String infoDetail;
-
-  const ProfileCard({required this.infoTitle, required this.infoDetail});
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.symmetric(vertical: 8.0),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(infoTitle, style: TextStyle(fontWeight: FontWeight.bold)),
-            SizedBox(height: 5),
-            Text(infoDetail),
-          ],
+          style: ElevatedButton.styleFrom(
+            padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            )
+          )
         ),
       ),
     );

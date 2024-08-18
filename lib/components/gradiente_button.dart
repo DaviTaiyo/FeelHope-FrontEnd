@@ -8,6 +8,7 @@ class GradienteButton extends StatelessWidget {
   final double? width;
   final double? height;
   final double? textSize;
+  final BorderRadius borderRadius;
 
   const GradienteButton({
     Key? key,
@@ -18,6 +19,7 @@ class GradienteButton extends StatelessWidget {
     this.height,
     this.width,
     this.textSize,
+    this.borderRadius = const BorderRadius.all(Radius.circular(8.0)), 
   }) : super(key: key);
 
   @override
@@ -28,11 +30,17 @@ class GradienteButton extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: width ?? 24, vertical: height ?? 12),
         decoration: BoxDecoration(
           gradient: gradient,
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: borderRadius,
         ),
-        child: Text(
-          text,
-          style: TextStyle(color: textColor, fontSize: textSize ?? 16, fontWeight: FontWeight.bold),
+        child: Center(
+          child: Text(
+            text,
+            style: TextStyle(
+              color: textColor,
+              fontSize: textSize ?? 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ),
       ),
     );
