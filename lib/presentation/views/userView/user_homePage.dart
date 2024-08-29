@@ -107,7 +107,9 @@ class _UserHomepageState extends State<UserHomepage> {
                     children: [
                       GradienteButton(
                           text: "Relatar meu dia",
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushNamed(context, "user-notes");
+                          },
                           gradient: LinearGradient(
                               colors: [Color(0xFF7F7FFF), Color(0xFF9A4DFF)]),
                           textColor: Colors.white),
