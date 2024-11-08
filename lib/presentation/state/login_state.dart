@@ -1,26 +1,29 @@
+import 'package:feelhope/data/models/user_model.dart';
+import 'package:feelhope/domain/usecases/login_user.dart';
 import 'package:flutter/material.dart';
-import '../../domain/entities/user.dart';
-import '../../domain/usecases/login_user.dart';
 
-class LoginState with ChangeNotifier {
-  final LoginUser loginUser;
-  User? _user;
-  String? _error;
+class UsuarioLoginViewModel extends ChangeNotifier {
+  final LoginUsuario loginUsuario;
+  UsuarioModel? usuario;
+  bool isLoading = false;
+  String? error;
 
-  LoginState(this.loginUser);
+  UsuarioLoginViewModel(this.loginUsuario);
 
-  User? get user => _user;
-  String? get error => _error;
-
-  Future<void> login(String username, String password) async {
-    final result = await loginUser(username, password);
-    if (result != null) {
-      _user = result;
-      _error = null;
-    } else {
-      _error = 'Login failed';
-    }
-
+  Future<void> login(String email, String senha) async {
+    isLoading = true;
+    error = null;  // Limpa qualquer erro anterior
     notifyListeners();
+
+    try {
+      usuario = await loginUsuario(email, senha);
+      error = null;  // Se o login foi bem-sucedido, limpa o erro
+    } catch (e) {
+      usuario = null;  // Define `usuario` como `null` para indicar falha no login
+      error = "Falha no login. Verifique suas credenciais.";  // Define a mensagem de erro
+    } finally {
+      isLoading = false;
+      notifyListeners();  // Notifica os listeners sobre as atualizações
+    }
   }
 }

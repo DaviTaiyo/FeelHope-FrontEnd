@@ -1,22 +1,39 @@
-import '../../../external/api/api_service.dart';
-import '../../models/user_model.dart';
+import 'package:dio/dio.dart';
+import 'package:feelhope/data/models/user_model.dart';
 
+class UsuarioRemoteDataSource {
+  final Dio dio;
 
-class UserRemoteDataSource {
-  final ApiService apiService;
+  UsuarioRemoteDataSource(this.dio);
 
-  UserRemoteDataSource(this.apiService);
-
-  Future<UserModel?> login(String username, String password) async {
-    final response = await apiService.post('/login', {
-      'username': username,
-      'password': password,
+  Future<UsuarioModel> login(String email, String senha) async {
+    final response = await dio.post('/Usuario/login', data: {
+      'email': email,
+      'Senha': senha,
     });
-
+    print(response.data);
     if (response.statusCode == 200) {
-      return UserModel.fromJson(response.data);
+      return UsuarioModel.fromJson(response.data);
     } else {
-      return null;
+      throw Exception('Falha no login');
     }
   }
+
+  Future<String> register(UsuarioModel usuario) async {
+  final response = await dio.post(
+    '/usuario/registrar',
+    data: usuario.toJson(),
+  );
+
+  if (response.statusCode == 200) {
+    if (response.data is String) {
+      return response.data;
+    } else {
+      return 'Usuário cadastrado com sucesso!';
+    }
+  } else {
+    throw Exception('Falha no registro');
+  }
+}
+
 }

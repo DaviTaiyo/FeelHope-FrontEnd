@@ -1,12 +1,22 @@
-import '../entities/user.dart';
-import '../repositories/user_repository.dart';
+import 'package:feelhope/data/models/user_model.dart';
+import 'package:feelhope/domain/repositories/user_repository.dart';
 
-class LoginUser {
-  final UserRepository repository;
+class LoginUsuario {
+  final UsuarioRepository repository;
 
-  LoginUser(this.repository);
+  LoginUsuario(this.repository);
 
-  Future<User?> call(String username, String password) {
-    return repository.login(username, password);
+  Future<UsuarioModel?> call(String email, String senha) async {
+    return await repository.login(email, senha);
+  }
+}
+
+class RegistrarUsuario {
+  final UsuarioRepository repository;
+
+  RegistrarUsuario(this.repository);
+
+  Future<String> call(UsuarioModel usuario) async {
+    return await repository.register(usuario);
   }
 }

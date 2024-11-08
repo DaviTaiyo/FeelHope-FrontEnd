@@ -5,20 +5,7 @@ import 'package:feelhope/presentation/views/psychoView/psyProfileScreen.dart';
 import 'package:feelhope/presentation/views/psychoView/relatoriosPacientesPage.dart';
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: HomePage(),
-    );
-  }
-}
-
-class HomePage extends StatelessWidget {
+class HomePagePsyco extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

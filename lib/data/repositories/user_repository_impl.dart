@@ -1,15 +1,29 @@
-import '../../domain/entities/user.dart';
-import '../../domain/repositories/user_repository.dart';
-import '../datasources/remote/user_remote_datasource.dart';
+import 'package:feelhope/domain/repositories/user_repository.dart';
+import 'package:feelhope/data/datasources/remote/user_remote_datasource.dart';
+import 'package:feelhope/data/models/user_model.dart';
 
-class UserRepositoryImpl implements UserRepository {
-  final UserRemoteDataSource remoteDataSource;
+class UsuarioRepositoryImpl implements UsuarioRepository {
+  final UsuarioRemoteDataSource remoteDataSource;
 
-  UserRepositoryImpl(this.remoteDataSource);
+  UsuarioRepositoryImpl(this.remoteDataSource);
 
   @override
-  Future<User?> login(String username, String password) async {
-    final userModel = await remoteDataSource.login(username, password);
-    return userModel;
+  Future<UsuarioModel?> login(String email, String senha) async {
+    try {
+      final usuarioModel = await remoteDataSource.login(email, senha);
+      return usuarioModel;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<String> register(UsuarioModel usuario) async { // Altere para Future<String>
+    try {
+      final resultMessage = await remoteDataSource.register(usuario); // Recebe a mensagem de sucesso
+      return resultMessage;
+    } catch (e) {
+      rethrow;
+    }
   }
 }

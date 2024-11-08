@@ -2,11 +2,15 @@ import 'package:feelhope/components/gradiente_button.dart';
 import 'package:feelhope/components/side_barMenu.dart';
 import 'package:feelhope/components/switchTheme.dart';
 import 'package:feelhope/components/themeNotifier.dart';
+import 'package:feelhope/data/models/user_model.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class UserHomepage extends StatefulWidget {
+  final UsuarioModel? usuario;
+  
+  UserHomepage({this.usuario});
   @override
   _UserHomepageState createState() => _UserHomepageState();
 }

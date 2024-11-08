@@ -1,5 +1,6 @@
-import 'package:feelhope/domain/entities/user.dart';
+import 'package:feelhope/data/models/user_model.dart';
 
-abstract class UserRepository {
-  Future<User?> login(String username, String password);
+abstract class UsuarioRepository {
+  Future<UsuarioModel?> login(String email, String senha);
+  Future<String> register(UsuarioModel usuario);
 }
