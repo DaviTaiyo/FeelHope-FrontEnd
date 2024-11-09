@@ -52,4 +52,20 @@ class UsuarioRemoteDataSource {
       throw Exception('Erro ao buscar dados do usuário');
     }
   }
+
+    Future<void> updateUser(UsuarioModel usuario) async {
+    try {
+      final response = await dio.put(
+        '/Usuario/atualizar/${usuario.id}',
+        data: usuario.toJson(),
+      );
+
+      if (response.statusCode != 200) {
+        throw Exception('Falha ao atualizar perfil');
+      }
+    } catch (e) {
+      print("Erro ao atualizar o perfil do usuário: $e");
+      throw Exception('Erro ao atualizar o perfil');
+    }
+  }
 }

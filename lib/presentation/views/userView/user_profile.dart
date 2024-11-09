@@ -9,7 +9,8 @@ import 'package:provider/provider.dart';
 class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final usuarioRemoteDataSource = Provider.of<UsuarioRemoteDataSource>(context, listen: false);
+    final usuarioRemoteDataSource =
+        Provider.of<UsuarioRemoteDataSource>(context, listen: false);
 
     return Scaffold(
       appBar: AppBar(
@@ -34,9 +35,12 @@ class ProfileScreen extends StatelessWidget {
               child: Column(
                 children: [
                   _buildProfileItem('Nome', usuario.nome ?? 'Não disponível'),
-                  _buildProfileItem('Sobrenome', usuario.sobrenome ?? 'Não disponível'),
-                  _buildProfileItem('E-mail', usuario.email ?? 'Não disponível'),
-                  _buildProfileItem('Telefone', usuario.telefone ?? 'Não disponível'),
+                  _buildProfileItem(
+                      'Sobrenome', usuario.sobrenome ?? 'Não disponível'),
+                  _buildProfileItem(
+                      'E-mail', usuario.email ?? 'Não disponível'),
+                  _buildProfileItem(
+                      'Telefone', usuario.telefone ?? 'Não disponível'),
                   _buildProfileItem('Foto de Perfil', usuario.foto ?? ''),
                   _buildProfileItem('Cpf', usuario.cpf ?? 'Não disponível'),
                   Spacer(),
@@ -45,7 +49,11 @@ class ProfileScreen extends StatelessWidget {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => EditProfileScreen()),
+                        MaterialPageRoute(
+                          builder: (context) => EditProfileScreen(
+                              usuario:
+                                  usuario), // Passa o objeto `usuario` completo aqui
+                        ),
                       );
                     },
                     gradient: LinearGradient(

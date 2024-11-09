@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 class UsuarioModel extends Usuario {
   UsuarioModel({
     String? email,
-    //required String token,
     int? id,
     String? nome,
     String? sobrenome,
@@ -16,8 +15,8 @@ class UsuarioModel extends Usuario {
     String? foto,
     String? senha,
   }) : super(
+          id: id,
           email: email,
-          //token: token,
           nome: nome,
           sobrenome: sobrenome,
           dataNascimento: dataNascimento,
@@ -31,8 +30,8 @@ class UsuarioModel extends Usuario {
 
   factory UsuarioModel.fromJson(Map<String, dynamic> json) {
     return UsuarioModel(
+      id: json['id'],
       email: json['email'],
-      //token: json['token'],
       nome: json["nome"],
       sobrenome: json["sobrenome"],
       dataNascimento: json["dataNascimento"] != null
@@ -49,12 +48,13 @@ class UsuarioModel extends Usuario {
 
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'email': email,
-      //'token': token,
       'nome': nome,
       'sobrenome': sobrenome,
       'dataNascimento': dataNascimento != null
-          ? DateFormat('yyyy-MM-dd').format(dataNascimento!) // Converte para string
+          ? DateFormat('yyyy-MM-dd')
+              .format(dataNascimento!) // Converte para string
           : null,
       'telefone': telefone,
       'cpf': cpf,

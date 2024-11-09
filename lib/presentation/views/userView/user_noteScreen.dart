@@ -3,7 +3,6 @@ import 'package:feelhope/components/switchTheme.dart';
 import 'package:feelhope/components/themeNotifier.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../../../components/gradient_iconbutton.dart';
 
 class UserNoteScreen extends StatelessWidget {
