@@ -3,12 +3,12 @@ import 'package:feelhope/components/switchTheme.dart';
 import 'package:feelhope/presentation/views/psychoView/psyEditProfileScreen.dart';
 import 'package:flutter/material.dart';
 
-class ProfileScreen extends StatefulWidget {
+class PsyProfileScren extends StatefulWidget {
   @override
-  _ProfileScreenState createState() => _ProfileScreenState();
+  _PsyProfileScrenState createState() => _PsyProfileScrenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _PsyProfileScrenState extends State<PsyProfileScren> {
   String _name = 'Nome Exemplo';
   String _email = 'email@exemplo.com';
   String _phone = '123456789';
@@ -46,7 +46,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   final updatedProfile = await Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => EditProfileScreen(
+                      builder: (context) => PsyEditProfileScreen(
                         name: _name,
                         email: _email,
                         phone: _phone,

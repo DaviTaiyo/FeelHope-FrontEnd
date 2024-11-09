@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class EditProfileScreen extends StatefulWidget {
+class PsyEditProfileScreen extends StatefulWidget {
   final String name;
   final String email;
   final String phone;
@@ -8,7 +8,7 @@ class EditProfileScreen extends StatefulWidget {
   final String crm;
   final String additionalData;
 
-  EditProfileScreen({
+  PsyEditProfileScreen({
     required this.name,
     required this.email,
     required this.phone,
@@ -18,10 +18,10 @@ class EditProfileScreen extends StatefulWidget {
   });
 
   @override
-  _EditProfileScreenState createState() => _EditProfileScreenState();
+  _PsyEditProfileScreenState createState() => _PsyEditProfileScreenState();
 }
 
-class _EditProfileScreenState extends State<EditProfileScreen> {
+class _PsyEditProfileScreenState extends State<PsyEditProfileScreen> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _nameController;
   late TextEditingController _emailController;

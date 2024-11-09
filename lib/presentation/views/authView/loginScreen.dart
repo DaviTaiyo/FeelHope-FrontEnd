@@ -4,8 +4,6 @@ import 'package:feelhope/components/logoText.dart';
 import 'package:feelhope/components/switchTheme.dart';
 import 'package:feelhope/components/themeNotifier.dart';
 import 'package:feelhope/presentation/state/login_state.dart';
-import 'package:feelhope/presentation/views/authView/userRegistrationScreen.dart';
-import 'package:feelhope/presentation/views/userView/user_homePage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -20,14 +18,13 @@ class _LoginscreenState extends State<Loginscreen> {
   bool showPassword = false;
 
   void _showErrorMessage(String message) {
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      content: Text(message),
-      backgroundColor: Colors.red,
-    ),
-  );
-}
-
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Colors.red,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,8 +57,7 @@ class _LoginscreenState extends State<Loginscreen> {
                 ),
                 SizedBox(height: 50),
                 GradientTextField(
-                    hintText: "E-mail",
-                    controller: _emailController),
+                    hintText: "E-mail", controller: _emailController),
                 SizedBox(height: 20),
                 GradientTextField(
                   hintText: "Senha",
@@ -69,9 +65,7 @@ class _LoginscreenState extends State<Loginscreen> {
                   obscureText: !showPassword,
                   suffixButton: IconButton(
                     icon: Icon(
-                      showPassword
-                          ? Icons.visibility
-                          : Icons.visibility_off,
+                      showPassword ? Icons.visibility : Icons.visibility_off,
                       color: Colors.grey,
                     ),
                     onPressed: () {
@@ -85,37 +79,38 @@ class _LoginscreenState extends State<Loginscreen> {
                 GradienteButton(
                   text: "Login",
                   onPressed: () async {
-  if (_emailController.text.isNotEmpty && _passwordController.text.isNotEmpty) {
-    // Limpa qualquer erro anterior
-    loginViewModel.error = null;
-    await loginViewModel.login(
-      _emailController.text,
-      _passwordController.text,
-    );
+                    if (_emailController.text.isNotEmpty &&
+                        _passwordController.text.isNotEmpty) {
+                      // Limpa qualquer erro anterior
+                      loginViewModel.error = null;
+                      await loginViewModel.login(
+                        _emailController.text,
+                        _passwordController.text,
+                      );
 
-    // Verifica se o login foi bem-sucedido
-    if (loginViewModel.usuario != null) {
-      if (loginViewModel.usuario!.crm != null && loginViewModel.usuario!.crm!.isNotEmpty) {
-        // Redireciona para a tela do psicólogo
-        Navigator.pushNamed(context, "/homePsico");
-      } else {
-        // Redireciona para a tela do usuário comum
-        Navigator.pushNamed(context, "/home");
-      }
-    } else {
-      // Exibe uma mensagem de erro se o login falhou
-      _showErrorMessage(loginViewModel.error ?? "Falha no login. Verifique suas credenciais.");
-    }
-  } else {
-    // Exibe uma mensagem se os campos estiverem vazios
-    _showErrorMessage("Por favor, preencha todos os campos.");
-  }
-},
-
+                      // Verifica se o login foi bem-sucedido
+                      if (loginViewModel.usuario != null) {
+                        if (loginViewModel.usuario!.crm != null &&
+                            loginViewModel.usuario!.crm!.isNotEmpty) {
+                          // Redireciona para a tela do psicólogo
+                          Navigator.pushNamed(context, "/homePsico");
+                        } else {
+                          // Redireciona para a tela do usuário comum
+                          Navigator.pushNamed(context, "/home");
+                        }
+                      } else {
+                        // Exibe uma mensagem de erro se o login falhou
+                        _showErrorMessage(loginViewModel.error ??
+                            "Falha no login. Verifique suas credenciais.");
+                      }
+                    } else {
+                      // Exibe uma mensagem se os campos estiverem vazios
+                      _showErrorMessage("Por favor, preencha todos os campos.");
+                    }
+                  },
                   width: 130,
                   gradient: LinearGradient(
-                    colors: [Color(0xFF7F7FFF), Color(0xFF9A4DFF)]
-                  ),
+                      colors: [Color(0xFF7F7FFF), Color(0xFF9A4DFF)]),
                   textColor: Colors.white,
                 ),
                 SizedBox(height: 20),

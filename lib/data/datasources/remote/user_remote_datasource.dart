@@ -11,8 +11,10 @@ class UsuarioRemoteDataSource {
       'email': email,
       'Senha': senha,
     });
-    print(response.data);
+
     if (response.statusCode == 200) {
+      final token = response.data['token'];
+      dio.options.headers['Authorization'] = 'Bearer $token';
       return UsuarioModel.fromJson(response.data);
     } else {
       throw Exception('Falha no login');
@@ -20,20 +22,34 @@ class UsuarioRemoteDataSource {
   }
 
   Future<String> register(UsuarioModel usuario) async {
-  final response = await dio.post(
-    '/usuario/registrar',
-    data: usuario.toJson(),
-  );
+    final response = await dio.post(
+      '/usuario/registrar',
+      data: usuario.toJson(),
+    );
 
-  if (response.statusCode == 200) {
-    if (response.data is String) {
-      return response.data;
+    if (response.statusCode == 200) {
+      if (response.data is String) {
+        return response.data;
+      } else {
+        return 'Usuário cadastrado com sucesso!';
+      }
     } else {
-      return 'Usuário cadastrado com sucesso!';
+      throw Exception('Falha no registro');
     }
-  } else {
-    throw Exception('Falha no registro');
   }
-}
 
+  // Método para obter informações do usuário logado
+  Future<UsuarioModel> getUserInfo() async {
+    try {
+      final response = await dio.get('/Usuario/me');
+      if (response.statusCode == 200) {
+        return UsuarioModel.fromJson(response.data);
+      } else {
+        throw Exception('Falha ao buscar dados do usuário');
+      }
+    } catch (e) {
+      print("Erro ao buscar dados do usuário: $e");
+      throw Exception('Erro ao buscar dados do usuário');
+    }
+  }
 }

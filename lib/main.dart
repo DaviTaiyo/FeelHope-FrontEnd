@@ -8,11 +8,11 @@ import 'package:feelhope/presentation/views/authView/forgotPasswordScreen.dart';
 import 'package:feelhope/presentation/views/authView/psychologistRegistrationScreen.dart';
 import 'package:feelhope/presentation/views/authView/userRegistrationScreen.dart';
 import 'package:feelhope/presentation/views/psychoView/homePagePsyScreen.dart';
-import 'package:feelhope/presentation/views/psychoView/psyProfileScreen.dart';
 import 'package:feelhope/presentation/views/splashscreen.dart';
 import 'package:feelhope/presentation/views/userView/document_user.dart';
 import 'package:feelhope/presentation/views/userView/user_homePage.dart';
 import 'package:feelhope/presentation/views/userView/user_noteScreen.dart';
+import 'package:feelhope/presentation/views/userView/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:dio/dio.dart';
@@ -33,6 +33,7 @@ void main() {
   runApp(
     MultiProvider(
       providers: [
+        Provider(create: (_) => UsuarioRemoteDataSource(dio)),
         ChangeNotifierProvider(
           create: (_) => UsuarioLoginViewModel(loginUsuario),
         ),

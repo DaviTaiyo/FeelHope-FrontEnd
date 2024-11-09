@@ -125,7 +125,7 @@ class SideBarMenu extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => ProfileScreen())
+                MaterialPageRoute(builder: (context) => PsyProfileScren())
               );
             },
           ),
