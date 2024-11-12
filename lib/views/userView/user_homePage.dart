@@ -1,13 +1,18 @@
+import 'dart:math'; // Import necessário para gerar cores aleatórias
 import 'package:feelhope/components/gradiente_button.dart';
 import 'package:feelhope/components/side_barMenu.dart';
 import 'package:feelhope/components/switchTheme.dart';
 import 'package:feelhope/components/themeNotifier.dart';
+import 'package:feelhope/models/Usuario_model.dart';
+import 'package:feelhope/services/sentimento_service.dart';
+import 'package:feelhope/services/usuario_service.dart';
 import 'package:feelhope/views/userView/Recomemendation_detail_screen.dart';
 import 'package:feelhope/views/userView/user_noteScreen.dart';
 import 'package:feelhope/views/userView/user_report_screen.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserHomepage extends StatefulWidget {
   UserHomepage();
@@ -18,27 +23,60 @@ class UserHomepage extends StatefulWidget {
 
 class _UserHomepageState extends State<UserHomepage> {
   int touchedIndex = -1;
-  late Map<String, double> sentimentoPorcentagens = {
-  "Tristeza e Angústia": 40,
-  "Felicidade e Motivação": 30,
-  "Neutro": 20,
-  "Estresse": 10,
-};
-
+  UsuarioService _usuarioService = UsuarioService();
+  SentimentoService _sentimentoService = SentimentoService();
+  Usuario? usuario;
+  Map<String, double> sentimentoPorcentagens = {};
+  List<Color> sentimentoCores = []; // Lista de cores para os sentimentos
 
   @override
-void initState() {
-  super.initState();
-  
-  // Inicializando sentimentoPorcentagens com dados mockados no initState
-  sentimentoPorcentagens = {
-    "Tristeza e Angústia": 40,
-    "Felicidade e Motivação": 30,
-    "Neutro": 20,
-    "Estresse": 10,
-  };
-}
+  void initState() {
+    super.initState();
+    fetchUsuarioData();
+  }
 
+  Future<void> fetchUsuarioData() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('authToken');
+
+    if (token != null) {
+      try {
+        final userData = await _usuarioService.getByToken(token);
+        setState(() {
+          usuario = userData;
+        });
+        if (usuario != null) {
+          await fetchSentimentos(token, usuario!.id!); // Carrega os sentimentos com o token e o usuarioId
+        }
+      } catch (e) {
+        print("Erro ao carregar usuário: $e");
+      }
+    }
+  }
+
+  Future<void> fetchSentimentos(String token, int usuarioId) async {
+    try {
+      final sentimentos = await _sentimentoService.getSentimentosByUsuario(token, usuarioId); // Obtém sentimentos
+      setState(() {
+        sentimentoPorcentagens = {
+          for (var sentimento in sentimentos) sentimento.titulo!: sentimento.nivel!.toDouble()
+        };
+
+        // Gera uma cor aleatória para cada sentimento
+        final random = Random();
+        sentimentoCores = List.generate(sentimentoPorcentagens.length, (index) {
+          return Color.fromARGB(
+            255,
+            random.nextInt(256),
+            random.nextInt(256),
+            random.nextInt(256),
+          ).withOpacity(0.8);
+        });
+      });
+    } catch (e) {
+      print("Erro ao carregar sentimentos: $e");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +89,11 @@ void initState() {
           ThemeSwitch(),
         ],
       ),
-      drawer: SideBarMenu(),
+      drawer: SideBarMenu(
+        nomeUsuario: usuario?.nome,
+        emailUsuario: usuario?.email,
+        avatarUrl: usuario?.foto,
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -59,6 +101,7 @@ void initState() {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                SizedBox(height: 10),
                 _buildRecomendacaoSection(),
                 SizedBox(height: 20),
                 Text(
@@ -70,7 +113,7 @@ void initState() {
                   ),
                 ),
                 SizedBox(height: 20),
-                _buildPieChart(sentimentoPorcentagens),
+                _buildPieChart(),
                 _buildLegenda(),
                 _buildBotoesAcoes(),
               ],
@@ -82,51 +125,51 @@ void initState() {
   }
 
   Widget _buildRecomendacaoSection() {
-  return InkWell(
-    onTap: () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => RecommendationDetailScreen(
-            title: 'Recomendações',
-            subtitle: 'Recomendações diárias para seu bem-estar',
-            description: 'Aqui você encontrará recomendações para ajudar no seu dia a dia e melhorar sua qualidade de vida.',
-            imageUrl: 'https://via.placeholder.com/150', // URL de exemplo para a imagem
-          ),
-        ),
-      );
-    },
-    child: Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
-        gradient: LinearGradient(
-          colors: [
-            Color(0xFF9A4DFF).withOpacity(0.8),
-            Color(0xFF7F7FFF).withOpacity(0.8),
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-      ),
-      padding: const EdgeInsets.all(16),
-      child: Row(
-        children: [
-          Icon(Icons.recommend, size: 40, color: Colors.white),
-          SizedBox(width: 10),
-          Expanded(
-            child: Text(
-              'Recomendações\nLorem Ipsum has been the industry\'s standard dummy text.',
-              style: TextStyle(color: Colors.white),
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => RecommendationDetailScreen(
+              title: 'Recomendações',
+              subtitle: 'Recomendações diárias para seu bem-estar',
+              description:
+                  'Aqui você encontrará recomendações para ajudar no seu dia a dia e melhorar sua qualidade de vida.',
+              imageUrl: 'https://via.placeholder.com/150',
             ),
           ),
-        ],
+        );
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15),
+          gradient: LinearGradient(
+            colors: [
+              Color(0xFF9A4DFF).withOpacity(0.8),
+              Color(0xFF7F7FFF).withOpacity(0.8),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          children: [
+            Icon(Icons.recommend, size: 40, color: Colors.white),
+            SizedBox(width: 10),
+            Expanded(
+              child: Text(
+                'Recomendações\nLorem Ipsum has been the industry\'s standard dummy text.',
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ],
+        ),
       ),
-    ),
-  );
-}
+    );
+  }
 
-
-  Widget _buildPieChart(Map<String, double> sentimentoPorcentagens) {
+  Widget _buildPieChart() {
     return SizedBox(
       height: 200,
       child: PieChart(
@@ -138,28 +181,22 @@ void initState() {
               });
             },
           ),
-          sections: _generateChartSections(sentimentoPorcentagens),
+          sections: _generateChartSections(),
         ),
       ),
     );
   }
 
-  List<PieChartSectionData> _generateChartSections(Map<String, double> sentimentoPorcentagens) {
-    final colors = [Colors.blue, Colors.green, Colors.orange, Colors.red];
-    final sentimentos = [
-      "Tristeza e Angústia",
-      "Felicidade e Motivação",
-      "Neutro",
-      "Estresse",
-    ];
-    return List.generate(4, (i) {
+  List<PieChartSectionData> _generateChartSections() {
+    return List.generate(sentimentoPorcentagens.length, (i) {
       final isTouched = i == touchedIndex;
       final double fontSize = isTouched ? 25 : 16;
       final double radius = isTouched ? 60 : 50;
+      final sentimentoNome = sentimentoPorcentagens.keys.elementAt(i);
       return PieChartSectionData(
-        color: colors[i],
-        value: sentimentoPorcentagens[sentimentos[i]] ?? 0,
-        title: '${(sentimentoPorcentagens[sentimentos[i]] ?? 0).toStringAsFixed(0)}%',
+        color: sentimentoCores[i],
+        value: sentimentoPorcentagens[sentimentoNome],
+        title: '${sentimentoPorcentagens[sentimentoNome]!.toStringAsFixed(0)}%',
         radius: radius,
         titleStyle: TextStyle(
           fontSize: fontSize,
@@ -172,12 +209,10 @@ void initState() {
 
   Widget _buildLegenda() {
     return Column(
-      children: [
-        buildLegendItem(Colors.blue, 'Tristeza e Angústia'),
-        buildLegendItem(Colors.green, 'Felicidade e Motivação'),
-        buildLegendItem(Colors.orange, 'Neutro'),
-        buildLegendItem(Colors.red, 'Estresse'),
-      ],
+      children: List.generate(sentimentoPorcentagens.length, (index) {
+        final sentimentoNome = sentimentoPorcentagens.keys.elementAt(index);
+        return buildLegendItem(sentimentoCores[index], sentimentoNome);
+      }),
     );
   }
 
@@ -207,22 +242,26 @@ void initState() {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           GradienteButton(
-              text: "Relatar meu dia",
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => UserNoteScreen()));
-              },
-              gradient: LinearGradient(
-                  colors: [Color(0xFF7F7FFF), Color(0xFF9A4DFF)]),
-              textColor: Colors.white),
+            text: "Relatar meu dia",
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => UserNoteScreen()));
+            },
+            gradient: LinearGradient(
+              colors: [Color(0xFF7F7FFF), Color(0xFF9A4DFF)],
+            ),
+            textColor: Colors.white,
+          ),
           Divider(),
           GradienteButton(
-              text: "Meus relatórios",
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => UserReportScreen()));
-              },
-              gradient: LinearGradient(
-                  colors: [Color(0xFF9A4DFF), Color(0xFF7F7FFF)]),
-              textColor: Colors.white),
+            text: "Meus relatórios",
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => UserReportScreen()));
+            },
+            gradient: LinearGradient(
+              colors: [Color(0xFF9A4DFF), Color(0xFF7F7FFF)],
+            ),
+            textColor: Colors.white,
+          ),
         ],
       ),
     );

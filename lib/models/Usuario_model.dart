@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class Usuario {
   final int? id;
   final String? nome;
@@ -33,7 +35,7 @@ class Usuario {
       nome: json['nome'],
       sobrenome: json['sobrenome'],
       email: json['email'],
-      dataNascimento: DateTime.tryParse(json['data_nascimento'] ?? ''),
+      dataNascimento: DateTime.tryParse(json['dataNascimento'] ?? ''),
       telefone: json['telefone'],
       cpf: json['cpf'],
       nomeClinica: json['nome_clinica'],
@@ -43,20 +45,39 @@ class Usuario {
     );
   }
 
-  Map<String, dynamic> toJson() {
-    final data = <String, dynamic> {
+  // Map<String, dynamic> toJson() {
+  //   final data = <String, dynamic> {
+  //     'nome': nome,
+  //     'sobrenome': sobrenome,
+  //     'email': email,
+  //     'data_nascimento': dataNascimento?.toIso8601String(),
+  //     'telefone': telefone,
+  //     'cpf': cpf,
+  //     'nome_clinica': nomeClinica,
+  //     'crm': crm,
+  //     'senha': senha,
+  //     'foto': foto,
+  //   };
+  
+  Map<String, dynamic> toJson({bool includeId = true}) {
+    final data = <String, dynamic>{
       'nome': nome,
       'sobrenome': sobrenome,
       'email': email,
-      'data_nascimento': dataNascimento?.toIso8601String(),
       'telefone': telefone,
       'cpf': cpf,
-      'nome_clinica': nomeClinica,
+      'DataNascimento': dataNascimento != null
+          ? DateFormat('yyyy-MM-dd').format(dataNascimento!) // Formata a data
+          : null,
       'crm': crm,
-      'senha': senha,
-      'foto': foto,
+      'nomeClinica': nomeClinica
     };
-    if (id != null) {
+
+
+    // if (id != null) {
+    //   data['id'] = id;
+    // }
+    if (includeId && id != null) {
       data['id'] = id;
     }
     return data;

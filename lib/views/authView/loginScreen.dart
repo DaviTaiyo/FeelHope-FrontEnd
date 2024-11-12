@@ -49,10 +49,8 @@ class _LoginscreenState extends State<Loginscreen> {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('authToken', resultado.token!);
       if (resultado.crm != null) {
-        _showMessage("Profissional Logado");
         Navigator.push(context, MaterialPageRoute(builder: (context) => HomePagePsyco()));
       } else {
-        _showMessage("Usuario Logado");
         Navigator.push(context, MaterialPageRoute(builder: (context) => UserHomepage()));
       }
     } else {
