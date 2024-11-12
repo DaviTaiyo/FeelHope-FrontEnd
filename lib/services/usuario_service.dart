@@ -3,7 +3,7 @@ import 'package:feelhope/models/Usuario_model.dart';
 import 'package:http/http.dart' as http;
 
 class UsuarioService {
-  static const String baseUrl = 'https://10.0.2.2:7002/api/Usuario/';
+  static const String baseUrl = 'https://10.0.2.2:7002/api/usuario';
 
   Future<Usuario?> login(String email, String senha) async {
     final response = await http.post(
@@ -25,6 +25,9 @@ class UsuarioService {
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(usuario.toJson()),
     );
+
+    print("Status Code: ${response.statusCode}");
+    print("Resposta: ${response.body}");
 
     return response.statusCode == 200 ? 'Usuário registrado com sucesso' : null;
   }

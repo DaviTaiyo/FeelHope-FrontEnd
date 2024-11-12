@@ -3,6 +3,8 @@ import 'package:feelhope/components/gradiente_button.dart';
 import 'package:feelhope/components/logoText.dart';
 import 'package:feelhope/components/switchTheme.dart';
 import 'package:feelhope/components/themeNotifier.dart';
+import 'package:feelhope/models/Usuario_model.dart';
+import 'package:feelhope/services/usuario_service.dart';
 import 'package:feelhope/views/authView/psychologistRegistrationScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -21,6 +23,7 @@ class _UserRegistrationScreenState extends State<UserRegistrationScreen> {
   final _telefoneController = TextEditingController();
   final _cpfController = TextEditingController();
   final _dataNascimentoController = TextEditingController();
+  final UsuarioService _usuarioService = UsuarioService(); //Chamei minha service
 
   bool _isTermsAccepted = false;
   bool _showPassword = false;
@@ -59,6 +62,30 @@ class _UserRegistrationScreenState extends State<UserRegistrationScreen> {
       },
     );
   }
+
+Future<void> _registrarUsuario() async {
+  if (!_isTermsAccepted) {
+    _showMessage("Aceite os Termos de Uso para continuar");
+    return;
+  }
+
+  final usuario = Usuario(
+    nome: _nomeController.text,
+    sobrenome: _sobrenomeController.text,
+    email: _emailController.text,
+    senha: _senhaController.text,
+    telefone: _telefoneController.text,
+    cpf: _cpfController.text,
+    dataNascimento: _selectedDate
+  );
+
+  final resultado = await _usuarioService.registrar(usuario);
+  if (resultado != null) {
+    _showMessage(resultado);
+  } else {
+    _showMessage("Erro ao registrar o usuario. Tente Novamente");
+  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -216,9 +243,7 @@ class _UserRegistrationScreenState extends State<UserRegistrationScreen> {
         GradienteButton(
           text: "Confirmar",
           onPressed: () {
-            if (!_isTermsAccepted) {
-              _showMessage("Aceite os Termos de Uso para continuar.");
-            }
+            _registrarUsuario();
           },
           width: 130,
           gradient: LinearGradient(

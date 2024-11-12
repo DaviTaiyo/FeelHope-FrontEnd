@@ -3,6 +3,8 @@ import 'package:feelhope/components/gradiente_button.dart';
 import 'package:feelhope/components/logoText.dart';
 import 'package:feelhope/components/switchTheme.dart';
 import 'package:feelhope/components/themeNotifier.dart';
+import 'package:feelhope/models/Usuario_model.dart';
+import 'package:feelhope/services/usuario_service.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -22,9 +24,55 @@ class _PsychologistRegisterScreenState extends State<PsychologistRegisterScreen>
   final _dataNascimentoController = TextEditingController();
   final _nomeClinicaController = TextEditingController();
   final _crmController = TextEditingController();
+  final UsuarioService _usuarioService = UsuarioService();
   bool _isTermsAccepted = false;
   bool _showPassword = false;
   DateTime? _selectedDate;
+
+  void _showMessage(String message) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text("Ok"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _registrarPsicologo() async {
+    if (!_isTermsAccepted) {
+      _showMessage("Você deve aceitar os termos de uso para prosseguir");
+      return;
+    }
+
+    final usuario = Usuario(
+      nome: _nomeController.text,
+      sobrenome: _sobrenomeController.text,
+      email: _emailController.text,
+      telefone: _telefoneController.text,
+      senha: _senhaController.text,
+      cpf: _cpfController.text,
+      crm: _crmController.text,
+      nomeClinica: _nomeClinicaController.text,
+      dataNascimento: _selectedDate
+    );
+
+    final resultado = await _usuarioService.registrar(usuario);
+    if (resultado != null) {
+      _showMessage(resultado);
+    } else {
+      _showMessage("Erro ao Registrar o usuario, tente novamente.");
+    }
+  }
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -181,7 +229,9 @@ class _PsychologistRegisterScreenState extends State<PsychologistRegisterScreen>
           padding: const EdgeInsets.fromLTRB(0,8,0,8),
           child: GradienteButton(
             text: "Confirmar",
-            onPressed: () {},
+            onPressed: () {
+              _registrarPsicologo();
+            },
             width: 130,
             gradient: LinearGradient(colors: [Color(0xFF7F7FFF), Color(0xFF9A4DFF)]),
             textColor: Colors.white,
