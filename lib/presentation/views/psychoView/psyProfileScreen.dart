@@ -3,25 +3,25 @@ import 'package:feelhope/components/switchTheme.dart';
 import 'package:feelhope/presentation/views/psychoView/psyEditProfileScreen.dart';
 import 'package:flutter/material.dart';
 
-class PsyProfileScren extends StatefulWidget {
+class PsyProfileScreen extends StatefulWidget {
   @override
-  _PsyProfileScrenState createState() => _PsyProfileScrenState();
+  _PsyProfileScreenState createState() => _PsyProfileScreenState();
 }
 
-class _PsyProfileScrenState extends State<PsyProfileScren> {
+class _PsyProfileScreenState extends State<PsyProfileScreen> {
   String _name = 'Nome Exemplo';
+  String _surname = "Sobrenome";
   String _email = 'email@exemplo.com';
   String _phone = '123456789';
+  String _cpf = "54689712";
   String _clinicName = 'Clínica Exemplo';
   String _crm = 'CRM12345';
-  String _additionalData = 'Dados complementares';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Perfil'),
-        backgroundColor: Color(0xFF9A4DFF),
         actions: [
           ThemeSwitch(),
         ],
@@ -29,49 +29,48 @@ class _PsyProfileScrenState extends State<PsyProfileScren> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildProfileItem('Nome de preferência', _name),
+            _buildProfileItem('Nome', _name),
+            _buildProfileItem("Sobrenome", _surname),
             _buildProfileItem('E-mail', _email),
             _buildProfileItem('Telefone', _phone),
+            _buildProfileItem("CPF", _cpf),
             _buildProfileItem('Nome da Clínica', _clinicName),
             _buildProfileItem('CRM', _crm),
-            _buildProfileItem('Dados complementares', _additionalData),
             Spacer(),
-            Align(
-              alignment: Alignment.center,
-              child: GradienteButton(
-                text: "Editar Perfil",
-                onPressed: () async {
-                  final updatedProfile = await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => PsyEditProfileScreen(
-                        name: _name,
-                        email: _email,
-                        phone: _phone,
-                        clinicName: _clinicName,
-                        crm: _crm,
-                        additionalData: _additionalData,
-                      ),
+            GradienteButton(
+              text: "Editar Perfil",
+              onPressed: () async {
+                final updatedProfile = await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => PsyEditProfileScreen(
+                      name: _name,
+                      surname: _surname,
+                      email: _email,
+                      phone: _phone,
+                      cpf: _cpf,
+                      clinicName: _clinicName,
+                      crm: _crm,
                     ),
-                  );
+                  ),
+                );
 
-                  if (updatedProfile != null) {
-                    setState(() {
-                      _name = updatedProfile['name'];
-                      _email = updatedProfile['email'];
-                      _phone = updatedProfile['phone'];
-                      _clinicName = updatedProfile['clinicName'];
-                      _crm = updatedProfile['crm'];
-                      _additionalData = updatedProfile['additionalData'];
-                    });
-                  }
-                },
-                gradient: LinearGradient(
-                    colors: [Color(0xFF7F7FFF), Color(0xFF9A4DFF)]),
-                textColor: Colors.white,
-              ),
+                if (updatedProfile != null) {
+                  setState(() {
+                    _name = updatedProfile['name'];
+                    _surname = updatedProfile['surname'];
+                    _email = updatedProfile['email'];
+                    _phone = updatedProfile['phone'];
+                    _cpf = updatedProfile['cpf'];
+                    _clinicName = updatedProfile['clinicName'];
+                    _crm = updatedProfile['crm'];
+                  });
+                }
+              },
+              gradient: LinearGradient(
+                  colors: [Color(0xFF7F7FFF), Color(0xFF9A4DFF)]),
+              textColor: Colors.white,
             ),
           ],
         ),
@@ -80,29 +79,26 @@ class _PsyProfileScrenState extends State<PsyProfileScren> {
   }
 
   Widget _buildProfileItem(String title, String value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
+    return Column(
+      children: [
+        ListTile(
+          title: Text(
             title,
             style: TextStyle(
               fontWeight: FontWeight.bold,
-              color: Colors.black87,
             ),
           ),
-          Expanded(
-            child: Text(
-              value,
-              textAlign: TextAlign.right,
-              style: TextStyle(
-                color: Colors.black54,
-              ),
+          trailing: Text(
+            value,
+            style: TextStyle(
+              fontWeight: FontWeight.normal,
+              fontSize: 15
             ),
           ),
-        ],
-      ),
+        ),
+        Divider(),
+      ],
+
     );
   }
 }

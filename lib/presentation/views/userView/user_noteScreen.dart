@@ -3,12 +3,38 @@ import 'package:feelhope/components/switchTheme.dart';
 import 'package:feelhope/components/themeNotifier.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../../components/gradient_iconbutton.dart';
+import 'package:intl/intl.dart';
 
-class UserNoteScreen extends StatelessWidget {
+class UserNoteScreen extends StatefulWidget {
+  @override
+  _UserNoteScreenState createState() => _UserNoteScreenState();
+}
+
+class _UserNoteScreenState extends State<UserNoteScreen> {
   final TextEditingController _textController = TextEditingController();
   String? selectedFeeling;
   String? selectedIntensity;
+  final String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+
+  final List<String> intensidades = ['Baixo', 'Moderado', 'Alto'];
+  final List<String> sentimentos = [
+    'Tristeza',
+    'Felicidade',
+    'Raiva',
+    'Medo',
+    'Ansiedade'
+  ];
+
+  void _submitReport() {
+    if (selectedFeeling != null && selectedIntensity != null && _textController.text.isNotEmpty) {
+      Navigator.pop(context, {
+        "title": "Relatório de $selectedFeeling",
+        "date": formattedDate,
+        "description": _textController.text,
+        "intensity": selectedIntensity
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,146 +42,88 @@ class UserNoteScreen extends StatelessWidget {
     final isDarkMode = themeNotifier.isDarkMode;
 
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Novo Relatório"),
+        actions: [
+          ThemeSwitch(),
+        ],
+      ),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(16, 0, 16, 10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Row(
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    icon: Icon(Icons.arrow_back),
-                    iconSize: 30,
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  formattedDate,
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: isDarkMode ? Colors.white70 : Colors.black54,
                   ),
-                  Text(
-                    "Voltar",
-                    style: TextStyle(
-                      color: themeNotifier.isDarkMode
-                          ? Colors.white54
-                          : Colors.black87,
-                    ),
-                  ),
-                  Spacer(),
-                  ThemeSwitch(),
-                ],
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              Expanded(
-                child: TextField(
+                ),
+                SizedBox(height: 20),
+                TextField(
                   controller: _textController,
                   maxLines: null,
-                  expands: true,
                   decoration: InputDecoration(
                     hintText: 'Descreva o que aconteceu...',
                     border: OutlineInputBorder(),
                     filled: true,
                   ),
                 ),
-              ),
-              SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Expanded(
-                    child: DropdownButtonFormField<String>(
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
+                SizedBox(height: 10),
+                Row(
+                  children: [
+                    Expanded(
+                      child: DropdownButtonFormField<String>(
+                        decoration: InputDecoration(border: OutlineInputBorder()),
+                        hint: Text('Sentimento'),
+                        value: selectedFeeling,
+                        items: sentimentos.map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        onChanged: (newValue) {
+                          setState(() {
+                            selectedFeeling = newValue;
+                          });
+                        },
                       ),
-                      hint: Text('Sentimento'),
-                      value: selectedFeeling,
-                      items: [
-                        'Tristeza',
-                        'Felicidade',
-                        'Raiva',
-                        'Medo',
-                        'Ansiedade',
-                      ].map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                      onChanged: (newValue) {
-                        selectedFeeling = newValue;
-                      },
                     ),
-                  ),
-                  SizedBox(width: 10),
-                  Expanded(
-                    child: DropdownButtonFormField<String>(
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
+                    SizedBox(width: 10),
+                    Expanded(
+                      child: DropdownButtonFormField<String>(
+                        decoration: InputDecoration(border: OutlineInputBorder()),
+                        hint: Text('Intensidade'),
+                        value: selectedIntensity,
+                        items: intensidades.map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        onChanged: (newValue) {
+                          setState(() {
+                            selectedIntensity = newValue;
+                          });
+                        },
                       ),
-                      hint: Text('O Quanto sentiu'),
-                      value: selectedIntensity,
-                      items: [
-                        'Baixo',
-                        'Moderado',
-                        'Alto',
-                      ].map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                      onChanged: (newValue) {
-                        selectedIntensity = newValue;
-                      },
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  GradienteIconButton(
-                      icon: Icons.mic,
-                      iconSize: 30,
-                      onPressed: () {},
-                      gradient: LinearGradient(
-                          colors: [Color(0xFF7F7FFF), Color(0xFF9A4DFF)]),
-                      iconColor: Colors.white),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                    ),
-                    onPressed: () {
-                      // Implementar funcionalidade de alerta/socorro
-                    },
-                    child: Text(
-                      'SOCORRO!',
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
-                    ),
-                  ),
-                  GradienteButton(
-                      text: "Enviar",
-                      onPressed: () {},
-                      gradient: LinearGradient(
-                          colors: [Color(0xFF7F7FFF), Color(0xFF9A4DFF)]),
-                      textColor: Colors.white),
-                ],
-              ),
-              SizedBox(height: 20),
-              Text(
-                '“Acredite em si mesmo e você será imparável.”',
-                style: TextStyle(
-                  color: isDarkMode ? Colors.white : Colors.black,
-                  fontStyle: FontStyle.italic,
+                  ],
                 ),
-              ),
-            ],
+                SizedBox(height: 20),
+                GradienteButton(
+                  text: "Enviar",
+                  onPressed: _submitReport,
+                  gradient: LinearGradient(
+                      colors: [Color(0xFF7F7FFF), Color(0xFF9A4DFF)]),
+                  textColor: Colors.white,
+                ),
+              ],
+            ),
           ),
         ),
       ),

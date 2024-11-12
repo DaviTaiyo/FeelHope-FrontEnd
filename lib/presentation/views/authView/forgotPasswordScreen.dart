@@ -91,8 +91,10 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               if (isCodeSent)
                 Text(
                   "Um código foi enviado para seu email!",
-                  style: TextStyle(color: Colors.black),
+                  style: TextStyle(color: Colors.purple, fontWeight: FontWeight.bold, fontSize: 20),
                 ),
+                Spacer(),
+                Text("Enquanto o software estiver offline em desenvolvimento tal tela não tera a função completa")
             ],
           ),
         ),

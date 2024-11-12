@@ -1,20 +1,24 @@
+import 'package:feelhope/components/gradiente_button.dart';
+import 'package:feelhope/components/switchTheme.dart';
 import 'package:flutter/material.dart';
 
 class PsyEditProfileScreen extends StatefulWidget {
   final String name;
+  final String surname;
   final String email;
   final String phone;
+  final String cpf;
   final String clinicName;
   final String crm;
-  final String additionalData;
 
   PsyEditProfileScreen({
     required this.name,
+    required this.surname,
     required this.email,
     required this.phone,
+    required this.cpf,
     required this.clinicName,
     required this.crm,
-    required this.additionalData,
   });
 
   @override
@@ -24,21 +28,23 @@ class PsyEditProfileScreen extends StatefulWidget {
 class _PsyEditProfileScreenState extends State<PsyEditProfileScreen> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _nameController;
+  late TextEditingController _surnameController;
   late TextEditingController _emailController;
   late TextEditingController _phoneController;
+  late TextEditingController _cpfController;
   late TextEditingController _clinicNameController;
   late TextEditingController _crmController;
-  late TextEditingController _additionalDataController;
 
   @override
   void initState() {
     super.initState();
     _nameController = TextEditingController(text: widget.name);
+    _surnameController = TextEditingController(text: widget.surname);
     _emailController = TextEditingController(text: widget.email);
     _phoneController = TextEditingController(text: widget.phone);
+    _cpfController = TextEditingController(text: widget.cpf);
     _clinicNameController = TextEditingController(text: widget.clinicName);
     _crmController = TextEditingController(text: widget.crm);
-    _additionalDataController = TextEditingController(text: widget.additionalData);
   }
 
   @override
@@ -46,7 +52,7 @@ class _PsyEditProfileScreenState extends State<PsyEditProfileScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Editar Perfil'),
-        backgroundColor: Color(0xFF8A2BE2),
+        actions: [ThemeSwitch()],
       ),
       body: SafeArea(
         child: Padding(
@@ -56,14 +62,14 @@ class _PsyEditProfileScreenState extends State<PsyEditProfileScreen> {
             child: ListView(
               children: [
                 _buildTextField(_nameController, 'Nome de preferência'),
+                _buildTextField(_surnameController, "Sobrenome"),
                 _buildTextField(
                     _emailController, 'E-mail', TextInputType.emailAddress),
                 _buildTextField(
                     _phoneController, 'Telefone', TextInputType.phone),
+                _buildTextField(_cpfController, "CPF"),
                 _buildTextField(_clinicNameController, 'Nome da clínica'),
                 _buildTextField(_crmController, 'CRM'),
-                _buildTextField(
-                    _additionalDataController, 'Dados complementares'),
                 SizedBox(height: 20),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -99,7 +105,8 @@ class _PsyEditProfileScreenState extends State<PsyEditProfileScreen> {
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8.0),
           ),
-          contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+          contentPadding:
+              EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
         ),
         validator: (value) {
           if (value == null || value.isEmpty) {
@@ -117,22 +124,12 @@ class _PsyEditProfileScreenState extends State<PsyEditProfileScreen> {
   }) {
     return SizedBox(
       width: 200,
-      child: ElevatedButton(
+      child: GradienteButton(
+        text: text,
         onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Color(0xFFF0E6FF),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30.0),
-          ),
-          padding: EdgeInsets.symmetric(vertical: 14.0),
-        ),
-        child: Text(
-          text,
-          style: TextStyle(
-            color: Color(0xFF7F7FFF),
-            fontSize: 16.0,
-          ),
-        ),
+        gradient:
+            LinearGradient(colors: [Color(0xFF7F7FFF), Color(0xFF9A4DFF)]),
+        textColor: Colors.white,
       ),
     );
   }
@@ -146,11 +143,12 @@ class _PsyEditProfileScreenState extends State<PsyEditProfileScreen> {
     if (_formKey.currentState!.validate()) {
       Navigator.pop(context, {
         'name': _nameController.text,
+        'surname': _surnameController.text,
         'email': _emailController.text,
         'phone': _phoneController.text,
+        'cpf': _cpfController.text,
         'clinicName': _clinicNameController.text,
         'crm': _crmController.text,
-        'additionalData': _additionalDataController.text,
       });
     }
   }
@@ -158,11 +156,12 @@ class _PsyEditProfileScreenState extends State<PsyEditProfileScreen> {
   @override
   void dispose() {
     _nameController.dispose();
+    _surnameController.dispose();
     _emailController.dispose();
     _phoneController.dispose();
+    _cpfController.dispose();
     _clinicNameController.dispose();
     _crmController.dispose();
-    _additionalDataController.dispose();
     super.dispose();
   }
 }

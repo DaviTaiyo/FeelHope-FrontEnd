@@ -1,8 +1,8 @@
-import 'package:feelhope/presentation/views/userView/user_homePage.dart';
-import 'package:feelhope/presentation/views/userView/user_profile.dart';
+import 'package:feelhope/presentation/views/psychoView/homePagePsyScreen.dart';
+import 'package:feelhope/presentation/views/psychoView/psyProfileScreen.dart';
 import 'package:flutter/material.dart';
 
-class SideBarMenu extends StatelessWidget {
+class PsySideBarMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -47,10 +47,10 @@ class SideBarMenu extends StatelessWidget {
             ),
           ),
           buildMenuItem(Icons.home, 'Home', () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => UserHomepage()));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => HomePagePsyco()));
           }),
           buildMenuItem(Icons.person, 'Profile', () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen()));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => PsyProfileScreen()));
           }),
           buildMenuItem(Icons.description_sharp, 'Documents', () {
           }),
@@ -63,6 +63,7 @@ class SideBarMenu extends StatelessWidget {
     );
   }
 
+  
   Widget buildMenuItem(IconData icon, String title, VoidCallback onTap) {
     return ListTile(
       leading: Icon(icon),
