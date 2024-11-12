@@ -27,4 +27,36 @@ class RelatorioService {
       throw Exception('Falha ao carregar relatórios do usuário');
     }
   }
+
+  Future<Map<String, dynamic>> getRelatorioById(int reportId) async {
+    final response = await http.get(
+      Uri.parse('$baseUrl/$reportId'),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      throw Exception('Falha ao carregar detalhes do relatório');
+    }
+  }
+
+  Future<String?> criarRelatorio(Map<String, dynamic> reportData, String token) async {
+    final response = await http.post(
+      Uri.parse(baseUrl),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode(reportData),
+    );
+
+    if (response.statusCode == 201) {
+      return "Relatorio criado com Sucesso";
+    } else {
+      return "Falha ao criar Relatorio ${response.statusCode}";
+    }
+  }
 }

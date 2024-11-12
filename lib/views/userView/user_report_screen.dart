@@ -123,16 +123,18 @@ class _UserReportScreenState extends State<UserReportScreen> {
                         itemBuilder: (context, index) {
                           final report = reports[index];
                           return GestureDetector(
+                            // Dentro do método build e do ListView.builder em UserReportScreen:
                             onTap: () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => ReportDetailScreen(
-                                    report: Map<String, String>.from(report),
+                                    reportId: report["id"],
                                   ),
                                 ),
                               );
                             },
+
                             child: Container(
                               decoration: BoxDecoration(
                                 gradient: LinearGradient(
