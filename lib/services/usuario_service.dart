@@ -26,9 +26,11 @@ class UsuarioService {
       body: jsonEncode(usuario.toJson()),
     );
 
-    print("Status Code: ${response.statusCode}");
-    print("Resposta: ${response.body}");
-
     return response.statusCode == 200 ? 'Usuário registrado com sucesso' : null;
   }
 }
+
+
+    
+    // print("Status Code: ${response.statusCode}");
+    // print("Resposta: ${response.body}");

@@ -3,11 +3,14 @@ import 'package:feelhope/components/gradiente_button.dart';
 import 'package:feelhope/components/logoText.dart';
 import 'package:feelhope/components/switchTheme.dart';
 import 'package:feelhope/components/themeNotifier.dart';
+import 'package:feelhope/services/usuario_service.dart';
 import 'package:feelhope/views/authView/forgotPasswordScreen.dart';
 import 'package:feelhope/views/authView/userRegistrationScreen.dart';
+import 'package:feelhope/views/psychoView/homePagePsyScreen.dart';
 import 'package:feelhope/views/userView/user_homePage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Loginscreen extends StatefulWidget {
   @override
@@ -17,7 +20,45 @@ class Loginscreen extends StatefulWidget {
 class _LoginscreenState extends State<Loginscreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final UsuarioService _usuarioService = UsuarioService();
   bool showPassword = false;
+
+  void _showMessage(String message) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text("Ok"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _logarUsuario() async {
+    final resultado = await _usuarioService.login(_emailController.text, _passwordController.text);
+
+    if (resultado != null) {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('authToken', resultado.token!);
+      if (resultado.crm != null) {
+        _showMessage("Profissional Logado");
+        Navigator.push(context, MaterialPageRoute(builder: (context) => HomePagePsyco()));
+      } else {
+        _showMessage("Usuario Logado");
+        Navigator.push(context, MaterialPageRoute(builder: (context) => UserHomepage()));
+      }
+    } else {
+      _showMessage("Erro ao efetuar Login");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +106,7 @@ class _LoginscreenState extends State<Loginscreen> {
                 GradienteButton(
                   text: "Login",
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => UserHomepage()));
+                    _logarUsuario();
                   },
                   width: 130,
                   gradient: LinearGradient(colors: [Color(0xFF7F7FFF), Color(0xFF9A4DFF)]),

@@ -10,6 +10,7 @@ class Usuario {
   final String? crm;
   final String? senha;
   final String? foto;
+  final String? token;
 
   Usuario({
     this.id,
@@ -23,6 +24,7 @@ class Usuario {
     this.crm,
     this.senha,
     this.foto,
+    this.token
   });
 
   factory Usuario.fromJson(Map<String, dynamic> json) {
@@ -37,6 +39,7 @@ class Usuario {
       nomeClinica: json['nome_clinica'],
       crm: json['crm'],
       foto: json['foto'],
+      token: json['token'],
     );
   }
 
