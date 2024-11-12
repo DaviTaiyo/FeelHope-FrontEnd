@@ -1,6 +1,6 @@
 import 'package:feelhope/components/switchTheme.dart';
-import 'package:feelhope/presentation/views/userView/UserReportDetailScreen.dart';
-import 'package:feelhope/presentation/views/userView/user_noteScreen.dart';
+import 'package:feelhope/views/userView/UserReportDetailScreen.dart';
+import 'package:feelhope/views/userView/user_noteScreen.dart';
 import 'package:flutter/material.dart';
 
 class UserReportScreen extends StatefulWidget {
@@ -16,7 +16,8 @@ class _UserReportScreenState extends State<UserReportScreen> {
       "title": "Relatório de Bem-estar",
       "date": "2023-10-01",
       "description": "Hoje me senti muito motivado.",
-      "intensity": "Moderado"
+      "intensity": "Moderado",
+      "Sentimento": "Felicidade"
     },
   ];
 
@@ -91,6 +92,11 @@ class _UserReportScreenState extends State<UserReportScreen> {
                             style: TextStyle(color: Colors.white70),
                           ),
                           SizedBox(height: 4),
+                          Text(
+                            "Sentimento: ${report["Sentimento"]}",
+                            style: TextStyle(color: Colors.white70),
+                          ),
+                          SizedBox(height: 4,),
                           Text(
                             report["description"] ?? "",
                             maxLines: 1,

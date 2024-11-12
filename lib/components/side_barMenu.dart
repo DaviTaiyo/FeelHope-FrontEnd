@@ -1,5 +1,5 @@
-import 'package:feelhope/presentation/views/userView/user_homePage.dart';
-import 'package:feelhope/presentation/views/userView/user_profile.dart';
+import 'package:feelhope/views/userView/user_homePage.dart';
+import 'package:feelhope/views/userView/user_profile.dart';
 import 'package:flutter/material.dart';
 
 class SideBarMenu extends StatelessWidget {

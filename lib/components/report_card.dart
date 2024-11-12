@@ -1,4 +1,4 @@
-import 'package:feelhope/presentation/views/psychoView/relatoriosPacientesPage.dart';
+import 'package:feelhope/views/psychoView/relatoriosPacientesPage.dart';
 import 'package:flutter/material.dart';
 
 class ReportCard extends StatelessWidget {

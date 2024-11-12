@@ -1,5 +1,5 @@
-import 'package:feelhope/presentation/views/psychoView/homePagePsyScreen.dart';
-import 'package:feelhope/presentation/views/psychoView/psyProfileScreen.dart';
+import 'package:feelhope/views/psychoView/homePagePsyScreen.dart';
+import 'package:feelhope/views/psychoView/psyProfileScreen.dart';
 import 'package:flutter/material.dart';
 
 class PsySideBarMenu extends StatelessWidget {

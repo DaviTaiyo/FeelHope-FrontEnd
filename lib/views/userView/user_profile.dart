@@ -1,4 +1,4 @@
-import 'package:feelhope/presentation/views/userView/User_EditProfileScreen.dart';
+import 'package:feelhope/views/userView/User_EditProfileScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:feelhope/components/gradiente_button.dart';
 import 'package:feelhope/components/switchTheme.dart';

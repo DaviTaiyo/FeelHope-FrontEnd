@@ -3,10 +3,9 @@ import 'package:feelhope/components/gradiente_button.dart';
 import 'package:feelhope/components/logoText.dart';
 import 'package:feelhope/components/switchTheme.dart';
 import 'package:feelhope/components/themeNotifier.dart';
-import 'package:feelhope/presentation/views/authView/forgotPasswordScreen.dart';
-import 'package:feelhope/presentation/views/authView/userRegistrationScreen.dart';
-import 'package:feelhope/presentation/views/psychoView/homePagePsyScreen.dart';
-import 'package:feelhope/presentation/views/userView/user_homePage.dart';
+import 'package:feelhope/views/authView/forgotPasswordScreen.dart';
+import 'package:feelhope/views/authView/userRegistrationScreen.dart';
+import 'package:feelhope/views/userView/user_homePage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -62,21 +61,11 @@ class _LoginscreenState extends State<Loginscreen> {
                     },
                   ),
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: 50),
                 GradienteButton(
                   text: "Login",
                   onPressed: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => UserHomepage()));
-                  },
-                  width: 130,
-                  gradient: LinearGradient(colors: [Color(0xFF7F7FFF), Color(0xFF9A4DFF)]),
-                  textColor: Colors.white,
-                ),
-                SizedBox(height: 50,),
-                GradienteButton(
-                  text: "Login",
-                  onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => HomePagePsyco()));
                   },
                   width: 130,
                   gradient: LinearGradient(colors: [Color(0xFF7F7FFF), Color(0xFF9A4DFF)]),

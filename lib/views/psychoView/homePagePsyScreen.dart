@@ -1,7 +1,7 @@
 import 'package:feelhope/components/psy_side_barMenu.dart';
 import 'package:feelhope/components/report_card.dart';
 import 'package:feelhope/components/switchTheme.dart';
-import 'package:feelhope/presentation/views/psychoView/RecommendationListScreen.dart';
+import 'package:feelhope/views/psychoView/RecommendationListScreen.dart';
 import 'package:flutter/material.dart';
 
 class HomePagePsyco extends StatelessWidget {

@@ -1,6 +1,6 @@
 import 'package:feelhope/components/switchTheme.dart';
-import 'package:feelhope/presentation/views/psychoView/AddRecommendationScreen.dart';
-import 'package:feelhope/presentation/views/userView/Recomemendation_detail_screen.dart';
+import 'package:feelhope/views/psychoView/AddRecommendationScreen.dart';
+import 'package:feelhope/views/userView/Recomemendation_detail_screen.dart';
 import 'package:flutter/material.dart';
 
 class RecommendationListScreen extends StatefulWidget {

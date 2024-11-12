@@ -1,9 +1,12 @@
+import 'dart:io';
 import 'package:feelhope/components/themeNotifier.dart';
-import 'package:feelhope/presentation/views/authView/loginScreen.dart';
+import 'package:feelhope/services/ssl_overrides.dart';
+import 'package:feelhope/views/splashscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void main() {
+  HttpOverrides.global = MyHttpOverrides();
   runApp(
     MultiProvider(
       providers: [
@@ -21,7 +24,7 @@ class MyApp extends StatelessWidget {
       return MaterialApp(
         title: 'FeelHope App',
         theme: themeNotifier.currentTheme,
-        home: Loginscreen(),
+        home: Splashscreen(),
       );
     });
   }
