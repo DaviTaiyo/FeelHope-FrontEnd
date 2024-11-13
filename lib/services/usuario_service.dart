@@ -71,8 +71,3 @@ class UsuarioService {
 
 
 }
-
-
-    
-    // print("Status Code: ${response.statusCode}");
-    // print("Resposta: ${response.body}");

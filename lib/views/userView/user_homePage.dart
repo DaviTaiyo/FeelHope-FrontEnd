@@ -6,7 +6,7 @@ import 'package:feelhope/components/themeNotifier.dart';
 import 'package:feelhope/models/Usuario_model.dart';
 import 'package:feelhope/services/sentimento_service.dart';
 import 'package:feelhope/services/usuario_service.dart';
-import 'package:feelhope/views/userView/Recomemendation_detail_screen.dart';
+import 'package:feelhope/views/psychoView/RecommendationListScreen.dart';
 import 'package:feelhope/views/userView/user_noteScreen.dart';
 import 'package:feelhope/views/userView/user_report_screen.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -27,7 +27,7 @@ class _UserHomepageState extends State<UserHomepage> {
   SentimentoService _sentimentoService = SentimentoService();
   Usuario? usuario;
   Map<String, double> sentimentoPorcentagens = {};
-  List<Color> sentimentoCores = []; // Lista de cores para os sentimentos
+  List<Color> sentimentoCores = [];
 
   @override
   void initState() {
@@ -130,13 +130,7 @@ class _UserHomepageState extends State<UserHomepage> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => RecommendationDetailScreen(
-              title: 'Recomendações',
-              subtitle: 'Recomendações diárias para seu bem-estar',
-              description:
-                  'Aqui você encontrará recomendações para ajudar no seu dia a dia e melhorar sua qualidade de vida.',
-              imageUrl: 'https://via.placeholder.com/150',
-            ),
+            builder: (context) => RecommendationListScreen()
           ),
         );
       },
@@ -159,7 +153,7 @@ class _UserHomepageState extends State<UserHomepage> {
             SizedBox(width: 10),
             Expanded(
               child: Text(
-                'Recomendações\nLorem Ipsum has been the industry\'s standard dummy text.',
+                'Recomendações\nAqui você encontrará recomendações feitas pelo seu profissional para você',
                 style: TextStyle(color: Colors.white),
               ),
             ),

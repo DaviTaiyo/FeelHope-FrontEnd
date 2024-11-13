@@ -2,16 +2,16 @@ import 'package:feelhope/components/switchTheme.dart';
 import 'package:flutter/material.dart';
 
 class RecommendationDetailScreen extends StatelessWidget {
-  final String title;
-  final String subtitle;
-  final String description;
+  final String titulo;
+  final String subtitulo;
+  final String descricao;
   final String imageUrl;
 
   const RecommendationDetailScreen({
     Key? key,
-    required this.title,
-    required this.subtitle,
-    required this.description,
+    required this.titulo,
+    required this.subtitulo,
+    required this.descricao,
     required this.imageUrl,
   }) : super(key: key);
 
@@ -19,7 +19,7 @@ class RecommendationDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
+        title: Text(titulo),
         actions: [
           ThemeSwitch()
         ],
@@ -30,7 +30,7 @@ class RecommendationDetailScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              subtitle,
+              subtitulo,
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -49,7 +49,7 @@ class RecommendationDetailScreen extends StatelessWidget {
             ),
             SizedBox(height: 16),
             Text(
-              description,
+              descricao,
               style: TextStyle(fontSize: 16),
             ),
           ],
