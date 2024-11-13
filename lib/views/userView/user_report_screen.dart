@@ -1,6 +1,6 @@
 import 'package:feelhope/components/switchTheme.dart';
 import 'package:feelhope/services/relatorio_service.dart';
-import 'package:feelhope/services/usuario_service.dart'; // Adicione o serviço de usuário
+import 'package:feelhope/services/usuario_service.dart';
 import 'package:feelhope/views/userView/UserReportDetailScreen.dart';
 import 'package:feelhope/views/userView/user_noteScreen.dart';
 import 'package:flutter/material.dart';
@@ -123,7 +123,6 @@ class _UserReportScreenState extends State<UserReportScreen> {
                         itemBuilder: (context, index) {
                           final report = reports[index];
                           return GestureDetector(
-                            // Dentro do método build e do ListView.builder em UserReportScreen:
                             onTap: () {
                               Navigator.push(
                                 context,

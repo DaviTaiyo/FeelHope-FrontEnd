@@ -18,7 +18,7 @@ class RelatorioService {
       return list.map((json) => {
         "id": json["id"] ?? "",
         "sentimentos": json["sentimentos"] ?? "N/A",
-        "nivel": json["nivel"]?.toString() ?? "N/A",  // Convertendo `nivel` para string se necessário
+        "nivel": json["nivel"]?.toString() ?? "N/A",
         "descricaoRelatorio": json["descricaoRelatorio"] ?? "Sem descrição",
         "audio": json["audio"] ?? "",
         "date": json["date"] ?? "",

@@ -1,314 +1,111 @@
 import 'package:feelhope/components/switchTheme.dart';
+import 'package:feelhope/services/usuario_service.dart';
+import 'package:feelhope/views/psychoView/userReportScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class RelatoriosPacientesPage extends StatelessWidget {
-  final List<String> pacientes = [
-    "Guilherme Mendes",
-    "Maria Julia",
-    "Lucas Poggers"
-  ];
-
+class RelatoriosPacientesPage extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Relatórios dos Pacientes"),
-        actions: [ThemeSwitch()],
-      ),
-      body: ListView.builder(
-        itemCount: pacientes.length,
-        itemBuilder: (context, index) {
-          return Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Color(0xFF9A4DFF), Color(0xFF7F7FFF)],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-              borderRadius: BorderRadius.circular(12.0),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.2),
-                  spreadRadius: 2,
-                  blurRadius: 10,
-                  offset: Offset(0, 5),
-                ),
-              ],
-            ),
-            margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-            child: ListTile(
-              contentPadding: EdgeInsets.all(16.0),
-              title: Text(
-                pacientes[index],
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        RelatoriosPage(paciente: pacientes[index]),
-                  ),
-                );
-              },
-            ),
-          );
-        },
-      ),
-    );
-  }
+  _RelatoriosPacientesPageState createState() => _RelatoriosPacientesPageState();
 }
 
-class RelatoriosPage extends StatelessWidget {
-  final String paciente;
-
-  RelatoriosPage({required this.paciente});
-
-  final Map<String, List<Map<String, String>>> relatorios = {
-    "Guilherme Mendes": [
-      {
-        "data": "05/06/2024",
-        "descricao": "Estou me sentindo triste",
-        "sentimento": "Tristeza",
-        "escala": "Intensa"
-      },
-      {
-        "data": "01/05/2024",
-        "descricao": "Estou feliz",
-        "sentimento": "Felicidade",
-        "escala": "Média"
-      },
-    ],
-    "Maria Julia": [
-      {
-        "data": "07/04/2024",
-        "descricao": "Estou animada",
-        "sentimento": "Alegria",
-        "escala": "Baixa"
-      },
-      {
-        "data": "12/03/2024",
-        "descricao": "Sinto-me ansiosa",
-        "sentimento": "Ansiedade",
-        "escala": "Moderada"
-      },
-    ],
-    "Lucas Poggers": [
-      {
-        "data": "18/06/2024",
-        "descricao": "Dia tranquilo",
-        "sentimento": "Calma",
-        "escala": "Moderada"
-      },
-      {
-        "data": "22/07/2024",
-        "descricao": "Sentindo-se estressado",
-        "sentimento": "Estresse",
-        "escala": "Alto"
-      },
-    ],
-  };
+class _RelatoriosPacientesPageState extends State<RelatoriosPacientesPage> {
+  final UsuarioService _usuarioService = UsuarioService();
+  List<Map<String, dynamic>> pacientes = [];
+  bool isLoading = true;
+  String errorMessage = "";
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(paciente),
-        actions: [ThemeSwitch()],
-      ),
-      body: ListView(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text(
-              "Relatórios",
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          ...relatorios[paciente]!.map((relatorio) {
-            return Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Color(0xFF9A4DFF), Color(0xFF7F7FFF)],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                borderRadius: BorderRadius.circular(12.0),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
-                    spreadRadius: 2,
-                    blurRadius: 10,
-                    offset: Offset(0, 5),
-                  ),
-                ],
-              ),
-              margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-              child: ListTile(
-                contentPadding: EdgeInsets.all(16.0),
-                title: Text(
-                  relatorio["descricao"]!,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: 8),
-                    Text(
-                      "Data: ${relatorio["data"]!}",
-                      style: TextStyle(color: Colors.white70),
-                    ),
-                    Text(
-                      "Sentimento: ${relatorio["sentimento"]!}",
-                      style: TextStyle(color: Colors.white70),
-                    ),
-                    Text(
-                      "Intensidade: ${relatorio["escala"]!}",
-                      style: TextStyle(color: Colors.white70),
-                    ),
-                  ],
-                ),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          RelatorioDetalhePage(relatorio: relatorio),
-                    ),
-                  );
-                },
-              ),
-            );
-          }).toList(),
-        ],
-      ),
-    );
+  void initState() {
+    super.initState();
+    fetchPacientes();
   }
-}
 
-class RelatorioDetalhePage extends StatelessWidget {
-  final Map<String, String> relatorio;
+  Future<void> fetchPacientes() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('authToken');
 
-  RelatorioDetalhePage({required this.relatorio});
+    if (token == null) {
+      setState(() {
+        isLoading = false;
+        errorMessage = "Token de autenticação não encontrado.";
+      });
+      return;
+    }
+
+    try {
+      // Faz o GET nos usuários e filtra os que não têm CRM
+      final usuarios = await _usuarioService.getUsuarios(token);
+      setState(() {
+        pacientes = usuarios.where((usuario) => usuario['crm'] == null).toList();
+        isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+        errorMessage = "Erro ao carregar pacientes: $e";
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(relatorio["descricao"]!),
+        title: Text("Relatórios"),
         actions: [ThemeSwitch()],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Text(
-                  "Data:  ",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF9A4DFF),
-                  ),
-                ),
-                Text(
-                  relatorio["data"]!,
-                  style: TextStyle(fontSize: 16),
-                ),
-              ],
-            ),
-            SizedBox(height: 16),
-            Row(
-              children: [
-                Text(
-                  "Sentimento:  ",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF9A4DFF),
-                  ),
-                ),
-                Text(
-                  relatorio["sentimento"]!,
-                  style: TextStyle(fontSize: 16),
-                ),
-              ],
-            ),
-            SizedBox(height: 16),
-            Row(
-              children: [
-                Text(
-                  "Intensidade:  ",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF9A4DFF),
-                  ),
-                ),
-                Text(
-                  relatorio["escala"]!,
-                  style: TextStyle(fontSize: 16),
-                ),
-              ],
-            ),
-            SizedBox(height: 32),
-            Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Color(0xFF9A4DFF), Color(0xFF7F7FFF)],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                borderRadius: BorderRadius.circular(12.0),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
-                    spreadRadius: 2,
-                    blurRadius: 10,
-                    offset: Offset(0, 5),
-                  ),
-                ],
-              ),
-              padding: EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-                  Center(
-                    child: Text(
-                      "Relatório",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
+      body: isLoading
+          ? Center(child: CircularProgressIndicator())
+          : errorMessage.isNotEmpty
+              ? Center(child: Text(errorMessage, style: TextStyle(color: Colors.red)))
+              : ListView.builder(
+                  itemCount: pacientes.length,
+                  itemBuilder: (context, index) {
+                    final paciente = pacientes[index];
+                    return Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [Color(0xFF9A4DFF), Color(0xFF7F7FFF)],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        borderRadius: BorderRadius.circular(12.0),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.2),
+                            spreadRadius: 2,
+                            blurRadius: 10,
+                            offset: Offset(0, 5),
+                          ),
+                        ],
                       ),
-                    ),
-                  ),
-                  SizedBox(height: 8),
-                  Center(
-                    child: Text(
-                      relatorio["descricao"]!,
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.white70,
+                      margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                      child: ListTile(
+                        contentPadding: EdgeInsets.all(16.0),
+                        title: Text(
+                          paciente['nome'],
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                        subtitle: Text(
+                          paciente['email'] ?? '',
+                          style: TextStyle(color: Colors.white70),
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => PsyUserReportScreen(usuarioId: paciente['id']),
+                            ),
+                          );
+                        },
                       ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
+                    );
+                  },
+                ),
     );
   }
 }

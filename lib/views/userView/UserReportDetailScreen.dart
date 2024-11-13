@@ -3,7 +3,7 @@ import 'package:feelhope/services/relatorio_service.dart';
 import 'package:flutter/material.dart';
 
 class ReportDetailScreen extends StatefulWidget {
-  final int reportId; // Aceita o ID do relatório
+  final int reportId;
 
   const ReportDetailScreen({super.key, required this.reportId});
 
@@ -20,22 +20,51 @@ class _ReportDetailScreenState extends State<ReportDetailScreen> {
   @override
   void initState() {
     super.initState();
-    fetchReportDetails(); // Busca os detalhes do relatório ao iniciar
+    fetchReportDetails();
   }
 
   Future<void> fetchReportDetails() async {
     try {
       final details = await _relatorioService.getRelatorioById(widget.reportId);
       setState(() {
-        reportDetails = details;
         isLoading = false;
       });
+
+      // Show message if details are null or empty
+      if (details == null || details.isEmpty) {
+        _showMessage("O usuário não possui relatórios.");
+      } else {
+        setState(() {
+          reportDetails = details;
+        });
+      }
     } catch (e) {
       setState(() {
         isLoading = false;
-        errorMessage = "Erro ao carregar detalhes do relatório: $e";
+      });
+      setState(() {
+        errorMessage = "Erro ao carregar detalhes do relatório.";
       });
     }
+  }
+
+  void _showMessage(String message) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text("Ok"),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -48,15 +77,18 @@ class _ReportDetailScreenState extends State<ReportDetailScreen> {
       body: isLoading
           ? Center(child: CircularProgressIndicator())
           : errorMessage.isNotEmpty
-              ? Center(child: Text(errorMessage, style: TextStyle(color: Colors.red)))
+              ? Center(
+                  child: Text(errorMessage, style: TextStyle(color: Colors.red)))
               : reportDetails != null
                   ? Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _buildDetailRow("Sentimento", reportDetails!["sentimentos"] ?? "N/A"),
-                          _buildDetailRow("Intensidade", reportDetails!["nivel"]?.toString() ?? "N/A"),
+                          _buildDetailRow("Sentimento",
+                              reportDetails!["sentimentos"] ?? "N/A"),
+                          _buildDetailRow("Intensidade",
+                              reportDetails!["nivel"]?.toString() ?? "N/A"),
                           SizedBox(height: 32),
                           Container(
                             decoration: BoxDecoration(
@@ -91,7 +123,8 @@ class _ReportDetailScreenState extends State<ReportDetailScreen> {
                                 ),
                                 SizedBox(height: 8),
                                 Text(
-                                  reportDetails!["descricaoRelatorio"] ?? "Sem descrição disponível.",
+                                  reportDetails!["descricaoRelatorio"] ??
+                                      "Sem descrição disponível.",
                                   style: TextStyle(
                                     fontSize: 16,
                                     color: Colors.white70,
@@ -103,7 +136,8 @@ class _ReportDetailScreenState extends State<ReportDetailScreen> {
                         ],
                       ),
                     )
-                  : Center(child: Text("Detalhes do relatório não encontrados.")),
+                  : Center(
+                      child: Text("Detalhes do relatório não encontrados.")),
     );
   }
 

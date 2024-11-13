@@ -69,5 +69,28 @@ class UsuarioService {
   }
 }
 
+  Future<List<Map<String, dynamic>>> getUsuarios(String token) async {
+    final response = await http.get(
+      Uri.parse('$baseUrl/listar'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
 
+    if (response.statusCode == 200) {
+      List<dynamic> usuarios = jsonDecode(response.body);
+
+      return usuarios
+          .where((usuario) => usuario['crm'] == null)
+          .map((usuario) => {
+                'id': usuario['id'],
+                'nome': usuario['nome'],
+                'email': usuario['email'],
+              })
+          .toList();
+    } else {
+      throw Exception('Falha ao carregar usuários');
+    }
+  }
 }
