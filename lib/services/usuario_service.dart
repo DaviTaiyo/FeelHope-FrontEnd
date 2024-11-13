@@ -30,7 +30,7 @@ class UsuarioService {
 
     if (response.statusCode == 200) {
       return Usuario.fromJson(jsonDecode(response.body));
-    } else {
+    } else{
       return null;
     }
   }

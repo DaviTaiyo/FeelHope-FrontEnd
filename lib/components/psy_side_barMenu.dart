@@ -1,5 +1,5 @@
 import 'package:feelhope/views/psychoView/homePagePsyScreen.dart';
-import 'package:feelhope/views/psychoView/psyProfileScreen.dart';
+import 'package:feelhope/views/userView/user_profile.dart';
 import 'package:flutter/material.dart';
 
 class PsySideBarMenu extends StatelessWidget {
@@ -50,7 +50,7 @@ class PsySideBarMenu extends StatelessWidget {
             Navigator.push(context, MaterialPageRoute(builder: (context) => HomePagePsyco()));
           }),
           buildMenuItem(Icons.person, 'Profile', () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => PsyProfileScreen()));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen()));
           }),
           buildMenuItem(Icons.description_sharp, 'Documents', () {
           }),

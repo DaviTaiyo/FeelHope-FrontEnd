@@ -24,7 +24,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   late TextEditingController _emailController;
   late TextEditingController _phoneController;
   late TextEditingController _cpfController;
-  late TextEditingController _dateController; // Controlador para a data de nascimento
+  late TextEditingController _dateController;
+  late TextEditingController _nomeClinicaController;
+  late TextEditingController _crmController;
   UsuarioService _usuarioService = UsuarioService();
   DateTime? _selectedDate;
 
@@ -39,6 +41,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     _emailController = TextEditingController(text: widget.usuario?.email ?? '');
     _phoneController = TextEditingController(text: widget.usuario?.telefone ?? '');
     _cpfController = TextEditingController(text: widget.usuario?.cpf ?? '');
+    _nomeClinicaController = TextEditingController(text: widget.usuario?.nomeClinica ?? "");
+    _crmController = TextEditingController(text: widget.usuario?.crm ?? "");
+
 
     // Inicializa a data de nascimento, se disponível, e configura o controlador de data
     _selectedDate = widget.usuario?.dataNascimento;
@@ -88,6 +93,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       telefone: _phoneController.text,
       cpf: _cpfController.text,
       dataNascimento: _selectedDate,
+      nomeClinica: _nomeClinicaController.text,
+      crm: _crmController.text
     );
 
     final resultado = await _usuarioService.alterarUsuario(usuario, token);
@@ -107,6 +114,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           ThemeSwitch(),
         ],
       ),
+
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -119,6 +127,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 _buildTextField(_emailController, 'E-mail', TextInputType.emailAddress),
                 _buildTextField(_phoneController, 'Telefone', TextInputType.phone),
                 _buildTextField(_cpfController, 'CPF'),
+                widget.usuario?.nomeClinica == null ? SizedBox() : _buildTextField(_nomeClinicaController, 'Nome da Clinica'),
+                widget.usuario?.crm == null ? SizedBox() : _buildTextField(_crmController, "CRM"),
                 SizedBox(height: 5),
                 _buildDatePickerField('Data de Nascimento'),
                 SizedBox(height: 20),

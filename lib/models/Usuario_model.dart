@@ -106,7 +106,7 @@ class Usuario {
       dataNascimento: DateTime.tryParse(json['dataNascimento'] ?? ''),
       telefone: json['telefone'],
       cpf: json['cpf'],
-      nomeClinica: json['nome_clinica'],
+      nomeClinica: json['nomeClinica'],
       crm: json['crm'],
       foto: json['foto'],
       token: json['token'],

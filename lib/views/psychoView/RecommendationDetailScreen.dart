@@ -1,10 +1,11 @@
+import 'package:feelhope/components/switchTheme.dart';
 import 'package:flutter/material.dart';
 
 class RecommendationDetailScreen extends StatelessWidget {
   final String title;
   final String subtitle;
   final String description;
-  final String? imageUrl; // Pode ser nulo
+  final String? imageUrl;
 
   const RecommendationDetailScreen({
     required this.title,
@@ -18,6 +19,7 @@ class RecommendationDetailScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
+        actions: [ThemeSwitch()],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

@@ -61,6 +61,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ? DateFormat('dd/MM/yyyy').format(usuario!.dataNascimento!)
                   : "Não disponível",
             ),
+            usuario?.nomeClinica == null ? SizedBox() : _buildProfileItem('Nome da Clinica', usuario?.nomeClinica ?? ""),
+            usuario?.crm == null ? SizedBox() : _buildProfileItem('CRM', usuario?.crm.toString() ?? ""),
             Spacer(),
             GradienteButton(
               text: "Editar Perfil",

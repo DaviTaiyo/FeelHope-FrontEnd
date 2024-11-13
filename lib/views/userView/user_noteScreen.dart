@@ -114,7 +114,6 @@ class _UserNoteScreenState extends State<UserNoteScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final themeNotifier = Provider.of<ThemeNotifier>(context);
 
     return Scaffold(
       appBar: AppBar(
