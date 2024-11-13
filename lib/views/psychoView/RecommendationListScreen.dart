@@ -1,5 +1,6 @@
 import 'package:feelhope/components/switchTheme.dart';
 import 'package:feelhope/services/recomendacao_service.dart';
+import 'package:feelhope/services/usuario_service.dart'; // Adicione o serviço de usuário para buscar o CRM
 import 'package:feelhope/views/psychoView/AddRecommendationScreen.dart';
 import 'package:feelhope/views/psychoView/RecommendationDetailScreen.dart';
 import 'package:flutter/material.dart';
@@ -13,14 +14,42 @@ class RecommendationListScreen extends StatefulWidget {
 
 class _RecommendationListScreenState extends State<RecommendationListScreen> {
   final RecommendationService _recommendationService = RecommendationService();
+  final UsuarioService _usuarioService =
+      UsuarioService(); // Serviço de usuário para obter o CRM
   List<Map<String, dynamic>> recommendations = [];
   bool isLoading = true;
   String errorMessage = "";
+  String? crm; // Variável para armazenar o CRM do usuário
 
   @override
   void initState() {
     super.initState();
-    fetchRecommendations();
+    fetchUsuarioData(); // Buscar dados do usuário incluindo o CRM
+  }
+
+  Future<void> fetchUsuarioData() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('authToken');
+
+    if (token != null) {
+      try {
+        final usuario = await _usuarioService.getByToken(token);
+        setState(() {
+          crm = usuario?.crm;
+        });
+        fetchRecommendations(); // Carregar recomendações após obter o CRM
+      } catch (e) {
+        setState(() {
+          isLoading = false;
+          errorMessage = "Erro ao carregar dados do usuário: $e";
+        });
+      }
+    } else {
+      setState(() {
+        isLoading = false;
+        errorMessage = "Token de autenticação não encontrado.";
+      });
+    }
   }
 
   Future<void> fetchRecommendations() async {
@@ -146,6 +175,13 @@ class _RecommendationListScreenState extends State<RecommendationListScreen> {
                         );
                       },
                     ),
+      floatingActionButton: crm != null
+          ? FloatingActionButton(
+              onPressed: _navigateToAddRecommendation,
+              backgroundColor: Color(0xFF9A4DFF),
+              child: Icon(Icons.add, color: Colors.white),
+            )
+          : null,
     );
   }
 }

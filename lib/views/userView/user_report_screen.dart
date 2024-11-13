@@ -103,7 +103,7 @@ class _UserReportScreenState extends State<UserReportScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Relatórios do Usuário"),
+        title: Text("Relatórios"),
         actions: [
           ThemeSwitch(),
         ],

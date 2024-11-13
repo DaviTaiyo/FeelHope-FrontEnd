@@ -2,16 +2,14 @@ import 'package:feelhope/views/psychoView/relatoriosPacientesPage.dart';
 import 'package:flutter/material.dart';
 
 class ReportCard extends StatelessWidget {
-  final String period;
 
-  const ReportCard({required this.period});
 
   @override
   Widget build(BuildContext context) {
     return Card(
       margin: EdgeInsets.symmetric(vertical: 8.0),
       child: ListTile(
-        title: Text("Últimos relatórios reportados em $period:"),
+        title: Text("Relatorios Reportados"),
         trailing: ElevatedButton(
           onPressed: () {
             Navigator.push(

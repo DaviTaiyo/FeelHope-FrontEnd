@@ -33,16 +33,16 @@ class RecommendationDetailScreen extends StatelessWidget {
             Text(
               title,
               style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF9A4DFF),
+                  ),
             ),
             SizedBox(height: 8),
             Text(
               subtitle,
               style: TextStyle(
-                fontSize: 18,
-                color: Colors.grey[600],
+                fontSize: 19,
               ),
             ),
             SizedBox(height: 16),

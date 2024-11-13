@@ -26,4 +26,23 @@ class RecommendationService {
       throw Exception('Falha ao carregar recomendações');
     }
   }
+
+  Future<String?> createRecommendation(Map<String, dynamic> recommendationData, String token) async {
+    final response = await http.post(
+      Uri.parse(baseUrl), // Endpoint base para criação de recomendação
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token', // Cabeçalho de autorização
+      },
+      body: jsonEncode(recommendationData),
+    );
+
+    // Verifica se a resposta é bem-sucedida
+    if (response.statusCode == 201) {
+      return "Recomendação criada com sucesso";
+    } else {
+      // Retorna a mensagem de erro com o código de status
+      return "Falha ao criar recomendação: ${response.statusCode}";
+    }
+  }
 }
