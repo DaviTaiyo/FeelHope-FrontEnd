@@ -50,13 +50,16 @@ class UsuarioService {
     return 'Erro: ID do usuário não pode ser nulo.';
   }
 
+  // Converte o usuário para JSON, garantindo que os campos 'crm' e 'nomeClinica' sejam tratados
+  final usuarioJson = usuario.toJson(includeId: false);
+
   final response = await http.put(
     Uri.parse('$baseUrl/Atualizar/${usuario.id}'),
     headers: {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $token'
     },
-    body: jsonEncode(usuario.toJson(includeId: false)),
+    body: jsonEncode(usuarioJson),
   );
 
   print("Status Code: ${response.statusCode}");
@@ -68,6 +71,7 @@ class UsuarioService {
     return 'Erro ao atualizar usuário. Código: ${response.statusCode}';
   }
 }
+
 
   Future<List<Map<String, dynamic>>> getUsuarios(String token) async {
     final response = await http.get(

@@ -55,28 +55,35 @@ class _UserHomepageState extends State<UserHomepage> {
   }
 
   Future<void> fetchSentimentos(String token, int usuarioId) async {
-    try {
-      final sentimentos = await _sentimentoService.getSentimentosByUsuario(token, usuarioId); // Obtém sentimentos
-      setState(() {
-        sentimentoPorcentagens = {
-          for (var sentimento in sentimentos) sentimento.titulo!: sentimento.nivel!.toDouble()
-        };
+  try {
+    final sentimentos = await _sentimentoService.getSentimentosByUsuario(token, usuarioId); // Obtém sentimentos
 
-        // Gera uma cor aleatória para cada sentimento
-        final random = Random();
-        sentimentoCores = List.generate(sentimentoPorcentagens.length, (index) {
-          return Color.fromARGB(
-            255,
-            random.nextInt(256),
-            random.nextInt(256),
-            random.nextInt(256),
-          ).withOpacity(0.8);
-        });
+    // Calcula a soma total dos níveis
+    final double totalNiveis = sentimentos.fold(0, (sum, item) => sum + item.nivel!.toDouble());
+
+    setState(() {
+      // Calcula a porcentagem para cada sentimento
+      sentimentoPorcentagens = {
+        for (var sentimento in sentimentos)
+          sentimento.titulo!: (sentimento.nivel!.toDouble() / totalNiveis) * 100
+      };
+
+      // Gera uma cor aleatória para cada sentimento
+      final random = Random();
+      sentimentoCores = List.generate(sentimentoPorcentagens.length, (index) {
+        return Color.fromARGB(
+          255,
+          random.nextInt(256),
+          random.nextInt(256),
+          random.nextInt(256),
+        ).withOpacity(0.8);
       });
-    } catch (e) {
-      print("Erro ao carregar sentimentos: $e");
-    }
+    });
+  } catch (e) {
+    print("Erro ao carregar sentimentos: $e");
   }
+}
+
 
   @override
   Widget build(BuildContext context) {

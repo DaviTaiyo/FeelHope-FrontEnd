@@ -67,7 +67,7 @@ class _RecommendationListScreenState extends State<RecommendationListScreen> {
 
     try {
       final fetchedRecommendations = await _recommendationService
-          .getRecommendationsByUserId(token, usuarioId);
+          .getRecommendations(token);
       setState(() {
         recommendations = fetchedRecommendations;
         isLoading = false;

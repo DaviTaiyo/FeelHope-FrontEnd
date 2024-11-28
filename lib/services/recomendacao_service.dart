@@ -27,6 +27,29 @@ class RecommendationService {
     }
   }
 
+  Future<List<Map<String, dynamic>>> getRecommendations(String token) async {
+    final response = await http.get(
+      Uri.parse('$baseUrl'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token', // Cabeçalho de autorização
+      },
+    );
+
+    if (response.statusCode == 200) {
+      Iterable list = jsonDecode(response.body);
+
+      return list.map((json) => {
+        "titulo": json["titulo"] ?? "Sem titulo",
+        "subtitulo": json["subtitulo"] ?? "Sem subtítulo",
+        "descricao": json["descricao"] ?? "Sem descrição",
+        "imageUrl": json["imageUrl"] ?? "",
+      }).toList();
+    } else {
+      throw Exception("Falha ao carregar Recomendações");
+    }
+  }
+
   Future<String?> createRecommendation(Map<String, dynamic> recommendationData, String token) async {
     final response = await http.post(
       Uri.parse(baseUrl), // Endpoint base para criação de recomendação

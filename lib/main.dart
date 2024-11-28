@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:feelhope/components/themeNotifier.dart';
 import 'package:feelhope/services/ssl_overrides.dart';
+import 'package:feelhope/views/authView/loginScreen.dart';
 import 'package:feelhope/views/splashscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -25,6 +26,9 @@ class MyApp extends StatelessWidget {
         title: 'FeelHope App',
         theme: themeNotifier.currentTheme,
         home: Splashscreen(),
+        routes: {
+          '/login': (context) => Loginscreen()
+        },
       );
     });
   }

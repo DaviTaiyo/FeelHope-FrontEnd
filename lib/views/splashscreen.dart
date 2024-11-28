@@ -24,14 +24,16 @@ class _SplashscreenState extends State<Splashscreen> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset("assets/FeelHope_texto_logo.png",),
-            CircularProgressIndicator()
-          ],
-        )
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset("assets/FeelHope_texto_logo.png",),
+              CircularProgressIndicator()
+            ],
+          )
+        ),
       ),
     );
   }

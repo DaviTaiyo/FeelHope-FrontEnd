@@ -1,6 +1,7 @@
 import 'package:feelhope/views/userView/user_homePage.dart';
 import 'package:feelhope/views/userView/user_profile.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SideBarMenu extends StatelessWidget {
   final String? nomeUsuario;
@@ -62,7 +63,7 @@ class SideBarMenu extends StatelessWidget {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => ProfileScreen()));
           }),
-          buildMenuItem(Icons.description_sharp, 'Documents', () {}),
+          //buildMenuItem(Icons.description_sharp, 'Documents', () {}),
           Divider(),
           buildMenuItem(Icons.logout, 'Logout', () {
             showLogoutConfirmation(context);
@@ -81,29 +82,39 @@ class SideBarMenu extends StatelessWidget {
   }
 }
 
-Future<bool> showLogoutConfirmation(BuildContext context) async {
-  return await showDialog<bool>(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text("Deseja sair?"),
-            content: Text("Tem certeza que deseja sair?"),
-            actions: <Widget>[
-              TextButton(
-                child: Text("Não"),
-                onPressed: () {
-                  Navigator.of(context).pop(false);
-                },
-              ),
-              TextButton(
-                child: Text("Sim"),
-                onPressed: () {
-                  Navigator.of(context).pop(true);
-                },
-              ),
-            ],
-          );
-        },
-      ) ??
-      false;
+Future<void> logout(BuildContext context) async {
+  final prefs = await SharedPreferences.getInstance();
+
+  // Apaga o token do SharedPreferences
+  await prefs.remove('authToken');
+
+  // Navega para a tela de login e remove todas as outras telas da pilha de navegação
+  Navigator.of(context).pushNamedAndRemoveUntil('/login', (route) => false);
+}
+
+void showLogoutConfirmation(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: Text("Confirmar Logout"),
+        content: Text("Tem certeza de que deseja sair?"),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(); // Fecha o diálogo
+            },
+            child: Text("Cancelar"),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(); // Fecha o diálogo
+              logout(context); // Chama a função de logout
+            },
+            child: Text("Logout"),
+          ),
+        ],
+      );
+    },
+  );
 }
